@@ -1,3 +1,4 @@
+import { read } from "@/lib/server/queries/dictionary/read";
 import { promises as fs } from "fs";
 
 type PageProps = {
@@ -16,6 +17,7 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: PageProps) {
   const { word } = await params;
+  const details = await read({ word, lang: "en" });
 
   return <p>{word}</p>;
 }

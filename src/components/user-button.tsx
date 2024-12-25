@@ -26,22 +26,22 @@ const menuItems = [
   {
     title: "daily words",
     href: "/daily-words",
-    icon: <CalendarSync />,
+    icon: { icon: CalendarSync },
   },
   {
     title: "my word lists",
     href: "/word-lists",
-    icon: <Folders />,
+    icon: { icon: Folders },
   },
   {
     title: "bookmarks",
     href: "/bookmarks",
-    icon: <Bookmark />,
+    icon: { icon: Bookmark },
   },
   {
     title: "stats",
     href: "/stats",
-    icon: <ChartColumn />,
+    icon: { icon: ChartColumn },
   },
 ];
 
@@ -86,17 +86,17 @@ export default function UserButton() {
             {menuItems.map(({ title, href, icon }, idx) => (
               <DropdownMenuItem key={idx}>
                 <Link href={href} className="flex items-center gap-4 w-full">
-                  {icon}
+                  <icon.icon size={16} />
                   <p className="capitalize">{title}</p>
                 </Link>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="text-red-500 cursor-pointer"
+              className="cursor-pointer"
               onClick={() => signOut()}
             >
-              <LogOut /> Sign Out
+              <LogOut size={16} /> Sign Out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

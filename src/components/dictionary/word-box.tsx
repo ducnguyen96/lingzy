@@ -1,6 +1,8 @@
 import { PronunciationEntity } from "@/lib/server/services/dictionary";
 import PronunciationButton from "../audio-button";
-import { WordBoxButton } from "./word-box-button";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { wordTypeToColor } from "./colors";
 
 type WordBoxProps = {
   word: string;
@@ -24,11 +26,20 @@ export default function WordBox({
       </div>
       <div className="flex items-center px-4 py-2 justify-between border rounded-b-2xl">
         <div className="flex gap-4">
-          {translations.map((item, idx) => (
-            <WordBoxButton key={idx} {...item} />
+          {translations.map(({ type, quant }, idx) => (
+            <Link
+              key={idx}
+              href={`#${type}`}
+              className={cn(
+                "text-xs text-white font-semibold px-2 py-1 rounded uppercase",
+                wordTypeToColor(type, "bg"),
+              )}
+            >
+              {type}({quant})
+            </Link>
           ))}
         </div>
-        <p className="text-xs font-semibold opacity-50">
+        <p className="text-xs font-semibold text-muted-foreground">
           Definition & Meaning of &quot;{word}&quot;
         </p>
       </div>

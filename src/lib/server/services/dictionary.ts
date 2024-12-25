@@ -119,7 +119,9 @@ export const findFirst = async ({ word, lang }: FindDTO) => {
           },
         },
       },
-      pronunciations: true,
+      pronunciations: {
+        limit: 2,
+      },
     },
   });
 };

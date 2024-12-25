@@ -8,6 +8,11 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    {
+      pattern: /(text|bg)-(green|blue|orange|cyan|pink|gray|purple)-(400)/,
+    },
+  ],
   theme: {
     extend: {
       fontFamily: {

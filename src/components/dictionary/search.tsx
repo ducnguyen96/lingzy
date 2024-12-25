@@ -6,6 +6,8 @@ import { Input } from "../ui/input";
 import { Skeleton } from "../ui/skeleton";
 import Link from "next/link";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { wordTypeToColor } from "./colors";
 
 export default function DictSearch() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -73,17 +75,24 @@ export default function DictSearch() {
                 word.translations[0].wordPhoto?.thumbnail ||
                 "/assets/photo/no-photo.jpg"
               }
-              width={512}
-              height={512}
+              width={256}
+              height={256}
               alt={word.word}
-              className="h-28 rounded-lg"
+              className="h-36 w-full rounded-lg"
             />
             <div className="flex flex-1 flex-col justify-between space-y-2">
               <div className="flex flex-col space-y-2">
-                <p className="text-lg font-semibold">{word.word}</p>
-                <p>{word.translations[0].translation}</p>
+                <p className="font-semibold">{word.word}</p>
+                <p className="text-muted-foreground">
+                  {word.translations[0].translation}
+                </p>
               </div>
-              <p className="text-lg font-bold">
+              <p
+                className={cn(
+                  "font-semibold",
+                  wordTypeToColor(word.translations[0].type),
+                )}
+              >
                 [ {word.translations[0].type} ]
               </p>
             </div>

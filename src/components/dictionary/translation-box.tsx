@@ -30,7 +30,7 @@ function Box(props: BoxProps) {
   const { idx, wordPhoto, translation, title, examples, SubTranslations } =
     props;
   return (
-    <div className="border rounded-2xl p-4">
+    <div className="border rounded-2xl p-4 space-y-4">
       <div className="flex flex-col md:flex-row justify-between">
         <DescriptionBox position={idx} desc={translation} />
         {wordPhoto && (
@@ -38,13 +38,13 @@ function Box(props: BoxProps) {
             src={wordPhoto.photo}
             width={300}
             height={300}
-            className="h-56 w-52"
+            className="h-40 md:h-56 w-52"
             alt={`${title}-img`}
           />
         )}
       </div>
       {examples.length ? (
-        <div className="rounded-2xl p-4 border opacity-70 space-y-4 mt-10">
+        <div className="rounded-2xl p-4 border text-muted-foreground space-y-4 mt-10">
           <div className="flex items-center gap-4">
             <SwatchBookIcon />
             <p>Example</p>
@@ -72,7 +72,7 @@ export default function TranslationBox(props: {
       idx={idx.toString()}
       {...entity}
       SubTranslations={
-        <div className="space-y-4 mt-8">
+        <div className="space-y-4">
           {subTranslations.map((item, sIdx) => (
             <Box key={item.id} idx={`${idx}.${sIdx + 1}`} {...item} />
           ))}

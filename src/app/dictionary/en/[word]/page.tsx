@@ -9,7 +9,7 @@ type PageProps = {
 
 export async function generateStaticParams() {
   const file = await fs.readFile(
-    process.cwd() + "/src/app/dictionary/en/mit-10.txt",
+    process.cwd() + "/src/app/dictionary/en/mit-10k.txt",
     "utf8",
   );
 

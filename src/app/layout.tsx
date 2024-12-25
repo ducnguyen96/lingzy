@@ -11,7 +11,9 @@ import { Noto_Sans } from "next/font/google";
 //   subsets: ["latin"],
 //   variable: "--font-pacifico",
 // });
-const notoSans = Noto_Sans();
+const notoSans = Noto_Sans({
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Lingzy",

@@ -22,10 +22,6 @@ export default function DictSearch() {
   }, [searchTerm]);
 
   const [state, formAction, isPending] = useActionState(async () => {
-    const dictContent = document.getElementById("dict-content");
-    if (!debouncedTerm) return [];
-    if (dictContent) dictContent.style.display = "none";
-
     const resp = await fetch(`/api/dictionary?s=${debouncedTerm}&lang=en`);
 
     const json = await resp.json();
@@ -35,9 +31,15 @@ export default function DictSearch() {
   const [, startTransition] = useTransition();
 
   useEffect(() => {
+    const dictContent = document.getElementById("dict-content");
+    if (!debouncedTerm && dictContent) dictContent.style.display = "block";
+    if (!debouncedTerm) return;
+
     startTransition(() => {
       formAction();
     });
+
+    if (dictContent) dictContent.style.display = "none";
   }, [formAction, debouncedTerm]);
 
   return (

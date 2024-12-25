@@ -71,72 +71,75 @@ async function downloadFile(url: string, path: string) {
     });
 }
 
-export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
-  const res = await fetch(
-    `https://api.langeek.co/v1/cs/${lang}/word/?term=${word}&filter=,inCategory,photo`,
-  );
+const scrapeCambridgeWord = async (word: string) => {
+  const domain = "dictionary.cambridge.org";
+  const baseUrl = `https://${domain}`;
+  const source = `${baseUrl}/dictionary/english/${word}`;
 
-  const json: LanGeekEntry[] = await res.json();
+  const response = await fetch(source, {
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
+    },
+  });
+  if (!response.ok) return [];
 
-  const ps = json.map(async ({ id, entry }) => {
-    const found = await db.query.words.findFirst({
-      where: and(...[eq(words.lang, lang), eq(words.word, word)]),
+  const html = await response.text();
+  const $ = cheerio.load(html);
+
+  const pronunciations: InsertPronunciationDTO[] = [];
+
+  $(".dictionary:first-child")
+    .first()
+    .find("div.entry")
+    .first()
+    .find("div.pos-header")
+    .each((_, posHeader) => {
+      $(posHeader)
+        .find("span.dpron-i")
+        .each((idx, dpronI) => {
+          if (idx > 1) return;
+          const src = $(dpronI).find("audio source").attr("src") || "";
+          const originUrl = `${baseUrl}${src}`;
+          const audio = getFilename("audio");
+          const pronunciation: InsertPronunciationDTO = {
+            audio,
+            country: $(dpronI).find(".region").text(),
+            phonetic: $(dpronI).find(".ipa").text(),
+            wordId: 1,
+          };
+          pronunciations.push(pronunciation);
+
+          downloadFile(originUrl, audio);
+        });
     });
-    if (found) return;
 
-    const res = await fetch(
-      `https://dictionary.langeek.co/_next/data/lFF5zXONOfZDe1GDNta6a/${lang}/word/${id}.json`,
-    );
-    const json = await res.json();
+  return pronunciations;
+};
 
+const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
+  const found = await db.query.words.findFirst({
+    where: and(...[eq(words.lang, lang), eq(words.word, word)]),
+  });
+  if (found) return;
+
+  const res = await fetch(
+    `https://dictionary.langeek.co/_next/data/lFF5zXONOfZDe1GDNta6a/${lang}/word/${id}.json`,
+  );
+  if (!res.ok) return;
+  const json = await res.json();
+
+  try {
     const staticJ = json["pageProps"]["initialState"]["static"] as LGStatic;
     const wordEntry = staticJ["wordEntry"]["words"][0];
     const nearByWords = staticJ["nearbyWords"].map((word) => word["entry"]);
     const examples = staticJ["nlpExactExamplesItem"];
 
-    const domain = "dictionary.cambridge.org";
-    const baseUrl = `https://${domain}`;
-    const source = `${baseUrl}/dictionary/english/${entry}`;
-    const response = await fetch(source, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
-      },
-    });
-
-    const html = await response.text();
-    const $ = cheerio.load(html);
-
-    const pronunciations: InsertPronunciationDTO[] = [];
-
-    $(".dictionary:first-child")
-      .first()
-      .find("div.entry")
-      .first()
-      .find("div.pos-header")
-      .each((_, posHeader) => {
-        $(posHeader)
-          .find("span.dpron-i")
-          .each((idx, dpronI) => {
-            if (idx > 1) return;
-            const src = $(dpronI).find("audio source").attr("src") || "";
-            const originUrl = `${baseUrl}${src}`;
-            const audio = getFilename("audio");
-            const pronunciation: InsertPronunciationDTO = {
-              audio,
-              country: $(dpronI).find(".region").text(),
-              phonetic: $(dpronI).find(".ipa").text(),
-              wordId: 1,
-            };
-            pronunciations.push(pronunciation);
-
-            downloadFile(originUrl, audio);
-          });
-      });
+    const pronunciations = await scrapeCambridgeWord(word);
 
     const dto: InsertWordDTO = {
       lang,
-      word: entry,
+      word,
       nearByWords,
       pronunciations,
       translations: wordEntry["translations"].map((ts, idx) => {
@@ -202,6 +205,29 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
     };
 
     await insertOne(dto);
+  } catch (error) {
+    console.error("word: ", word);
+    console.error(error);
+  }
+};
+
+export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
+  const res = await fetch(
+    `https://api.langeek.co/v1/cs/${lang}/word/?term=${word}&filter=,inCategory,photo`,
+  );
+  if (!res.ok) return;
+
+  const json: LanGeekEntry[] = await res.json();
+
+  const ps = json.map(async ({ id, entry }) => {
+    if (entry === word) {
+      await scrapeLangeekWord(lang, entry, id);
+    } else {
+      return true;
+      // TODO: scrape related words
+
+      // scrapeLangeekWord(lang, entry, id);
+    }
   });
 
   await Promise.all(ps);

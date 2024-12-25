@@ -121,7 +121,7 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
             if (idx > 1) return;
             const src = $(dpronI).find("audio source").attr("src") || "";
             const originUrl = `${baseUrl}${src}`;
-            const { path: audio } = getFilename("audio");
+            const audio = getFilename("audio");
             const pronunciation: InsertPronunciationDTO = {
               audio,
               country: $(dpronI).find(".region").text(),
@@ -145,8 +145,8 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
         if (ts["wordPhoto"]) {
           const photoOrigurl = ts["wordPhoto"]["photo"];
           const thumbOrigurl = ts["wordPhoto"]["photoThumbnail"];
-          const { path: photoPath } = getFilename("photo");
-          const { path: thumbPath } = getFilename("photo");
+          const photoPath = getFilename("photo");
+          const thumbPath = getFilename("photo");
           wordPhoto = {
             title: ts["wordPhoto"]["originalTitle"],
             photo: photoPath,
@@ -161,8 +161,8 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
             if (st["wordPhoto"]) {
               const photoOrigurl = st["wordPhoto"]["photo"];
               const thumbOrigurl = st["wordPhoto"]["photoThumbnail"];
-              const { path: photoPath } = getFilename("photo");
-              const { path: thumbPath } = getFilename("photo");
+              const photoPath = getFilename("photo");
+              const thumbPath = getFilename("photo");
 
               wordPhoto = {
                 title: st["wordPhoto"]["originalTitle"],

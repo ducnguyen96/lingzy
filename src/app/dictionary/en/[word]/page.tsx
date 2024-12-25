@@ -46,7 +46,7 @@ export default async function Page({ params }: PageProps) {
   }
 
   return (
-    <div className="md:px-8 space-y-4 md:space-y-8">
+    <div className="md:px-8 lg:px-32 xl:px-48 2xl:px-60 space-y-4 md:space-y-8">
       <WordBox
         word={word}
         pronunciations={details.pronunciations}

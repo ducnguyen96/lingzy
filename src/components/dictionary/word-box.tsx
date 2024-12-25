@@ -24,14 +24,14 @@ export default function WordBox({
           <PronunciationButton key={item.id} {...item} />
         ))}
       </div>
-      <div className="flex items-center px-4 py-2 justify-between border rounded-b-2xl">
+      <div className="flex items-center p-4 justify-between border rounded-b-2xl">
         <div className="flex gap-4">
           {translations.map(({ type, quant }, idx) => (
             <Link
               key={idx}
               href={`#${type}`}
               className={cn(
-                "text-xs text-white font-semibold px-2 py-1 rounded uppercase",
+                "text-xs text-white font-semibold p-2 rounded uppercase",
                 wordTypeToColor(type, "bg"),
               )}
             >

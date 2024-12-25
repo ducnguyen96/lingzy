@@ -18,7 +18,7 @@ export default function TranslationGroupBox({
   return (
     <div className={className} id={type}>
       <div className="border rounded-2xl">
-        <div className="flex items-center justify-between bg-blue-50 p-4 rounded">
+        <div className="flex items-center justify-between bg-muted p-4 rounded">
           <span className="text-xl">{title}</span>
           <span
             className={cn(

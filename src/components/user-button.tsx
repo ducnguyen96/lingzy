@@ -1,7 +1,6 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
 
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -64,9 +63,13 @@ export default function UserButton() {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar className="cursor-pointer">
-              <AvatarImage src={userImg} alt={userImgAlt} />
-            </Avatar>
+            <Image
+              height={30}
+              width={30}
+              src={userImg}
+              alt={userImgAlt}
+              className="rounded-full"
+            />
           </DropdownMenuTrigger>
           <DropdownMenuContent side="bottom" align="end">
             <DropdownMenuLabel className="flex items-center justify-between gap-4">

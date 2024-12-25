@@ -7,12 +7,6 @@ import Header from "@/components/layout/header";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 
-// const pacifico = Pacifico({
-//   weight: "400",
-//   subsets: ["latin"],
-//   variable: "--font-pacifico",
-// });
-
 export const metadata: Metadata = {
   title: "Lingzy",
 };

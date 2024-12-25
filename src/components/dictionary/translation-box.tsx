@@ -9,7 +9,7 @@ import { ReactNode } from "react";
 function DescriptionBox(props: { position: string; desc: string }) {
   return (
     <div className="flex gap-2">
-      <p className="rounded-lg px-2 py-1 font-bold border w-fit h-fit">
+      <p className="rounded-lg px-2 py-1 font-semibold border w-fit h-fit">
         {props.position}
       </p>
       <p className="font-semibold">{props.desc}</p>

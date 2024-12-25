@@ -13,8 +13,37 @@ import {
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
-import { CalendarSync, LogOut } from "lucide-react";
+import {
+  Bookmark,
+  CalendarSync,
+  ChartColumn,
+  Folders,
+  LogOut,
+} from "lucide-react";
 import Link from "next/link";
+
+const menuItems = [
+  {
+    title: "daily words",
+    href: "/daily-words",
+    icon: <CalendarSync />,
+  },
+  {
+    title: "my word lists",
+    href: "/word-lists",
+    icon: <Folders />,
+  },
+  {
+    title: "bookmarks",
+    href: "/bookmarks",
+    icon: <Bookmark />,
+  },
+  {
+    title: "stats",
+    href: "/stats",
+    icon: <ChartColumn />,
+  },
+];
 
 export default function UserButton() {
   const { data: session, status } = useSession();
@@ -54,11 +83,14 @@ export default function UserButton() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href="/daily-words" className="flex items-center gap-4">
-                <CalendarSync /> daily words
-              </Link>
-            </DropdownMenuItem>
+            {menuItems.map(({ title, href, icon }, idx) => (
+              <DropdownMenuItem key={idx}>
+                <Link href={href} className="flex items-center gap-4 w-full">
+                  {icon}
+                  <p className="capitalize">{title}</p>
+                </Link>
+              </DropdownMenuItem>
+            ))}
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="text-red-500 cursor-pointer"

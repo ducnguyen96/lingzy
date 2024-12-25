@@ -15,7 +15,7 @@ export default function WordBox({
   return (
     <div className="rounded-2xl border flex flex-col">
       <div className="p-4 pb-0">
-        <p className="text-2xl font-bold capitalize">{word}</p>
+        <p className="text-2xl font-semibold capitalize">{word}</p>
       </div>
       <div className="p-4">
         {pronunciations.map((item) => (
@@ -28,7 +28,7 @@ export default function WordBox({
             <WordBoxButton key={idx} {...item} />
           ))}
         </div>
-        <p className="text-xs font-bold opacity-50">
+        <p className="text-xs font-semibold opacity-50">
           Definition & Meaning of &quot;{word}&quot;
         </p>
       </div>

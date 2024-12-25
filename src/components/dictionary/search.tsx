@@ -80,7 +80,7 @@ export default function DictSearch() {
             />
             <div className="flex flex-1 flex-col justify-between space-y-2">
               <div className="flex flex-col space-y-2">
-                <p className="text-lg font-bold">{word.word}</p>
+                <p className="text-lg font-semibold">{word.word}</p>
                 <p>{word.translations[0].translation}</p>
               </div>
               <p className="text-lg font-bold">

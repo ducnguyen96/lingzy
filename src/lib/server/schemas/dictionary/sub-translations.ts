@@ -31,5 +31,5 @@ export const insertSubTranslationSchema = createInsertSchema(subTranslations);
 export type InsertSubTranslationDTO = z.infer<
   typeof insertSubTranslationSchema
 > & {
-  wordPhoto: InsertWordPhotoDTO;
+  wordPhoto?: InsertWordPhotoDTO;
 };

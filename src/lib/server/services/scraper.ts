@@ -1,11 +1,59 @@
 import { and, eq } from "drizzle-orm";
 import * as cheerio from "cheerio";
 import db from "../db";
-import { InsertPronunciationDTO, InsertWordDTO, words } from "../schemas";
+import {
+  InsertPronunciationDTO,
+  InsertSubTranslationDTO,
+  InsertWordDTO,
+  words,
+} from "../schemas";
 import { FindDTO, insertOne } from "./dictionary";
 import https from "https";
 import { createWriteStream } from "fs";
 import { getFilename } from "@/lib/utils";
+
+type LanGeekEntry = {
+  id: number;
+  entry: string;
+};
+
+type WordPhoto = {
+  originalTitle: string;
+  photo: string;
+  photoThumbnail: string;
+};
+
+type SubTranslation = {
+  level: string;
+  translation: string;
+  wordPhoto: WordPhoto;
+};
+
+type Translation = {
+  translation: string;
+  synonyms: { word: string }[];
+  antonyms: { word: string }[];
+  level: string;
+  title: string;
+  type: string;
+  wordPhoto: WordPhoto;
+  subTranslations: SubTranslation[];
+};
+
+type NlpExactExamplesItem = {
+  examples: string[][][];
+  subTranslationExamples?: string[][][];
+};
+
+type LGStatic = {
+  wordEntry: {
+    words: {
+      translations: Translation[];
+    }[];
+  };
+  nearbyWords: { entry: string }[];
+  nlpExactExamplesItem: NlpExactExamplesItem[];
+};
 
 async function downloadFile(url: string, mime: "audio" | "photo") {
   const { path } = getFilename(mime);
@@ -29,11 +77,6 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
     `https://api.langeek.co/v1/cs/${lang}/word/?term=${word}&filter=,inCategory,photo`,
   );
 
-  type LanGeekEntry = {
-    id: number;
-    entry: string;
-  };
-
   const json: LanGeekEntry[] = await res.json();
 
   const ps = json.map(async ({ id, entry }) => {
@@ -47,7 +90,7 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
     );
     const json = await res.json();
 
-    const staticJ = json["pageProps"]["initialState"]["static"];
+    const staticJ = json["pageProps"]["initialState"]["static"] as LGStatic;
     const wordEntry = staticJ["wordEntry"]["words"][0];
     const nearByWords = staticJ["nearbyWords"].map((word) => word["entry"]);
     const examples = staticJ["nlpExactExamplesItem"];
@@ -97,8 +140,8 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
       nearByWords,
       pronunciations,
       translations: wordEntry["translations"].map((ts, idx) => {
-        let wordPhoto = null;
-        let subTranslations = [];
+        let wordPhoto;
+        let subTranslations: InsertSubTranslationDTO[] = [];
         if (ts["wordPhoto"]) {
           const photoOrigurl = ts["wordPhoto"]["photo"];
           const thumbOrigurl = ts["wordPhoto"]["photoThumbnail"];
@@ -114,7 +157,7 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
         }
         if (ts["subTranslations"]) {
           subTranslations = ts["subTranslations"].map((st) => {
-            let wordPhoto = null;
+            let wordPhoto;
             if (st["wordPhoto"]) {
               const photoOrigurl = st["wordPhoto"]["photo"];
               const thumbOrigurl = st["wordPhoto"]["photoThumbnail"];
@@ -135,10 +178,11 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
               level: st["level"],
               translation: st["translation"],
               examples:
-                examples["subTranslationExamples"]?.map((ex) =>
+                examples[idx]["subTranslationExamples"]?.map((ex) =>
                   ex[0].join(""),
                 ) || [],
               wordPhoto,
+              parentId: 1,
             };
           });
         }
@@ -153,6 +197,7 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
           type: ts["type"],
           wordPhoto,
           subTranslations,
+          wordId: 1,
         };
       }),
     };

@@ -1,4 +1,4 @@
-import { and, eq, ExtractTablesWithRelations } from "drizzle-orm";
+import { and, eq, ExtractTablesWithRelations, sql } from "drizzle-orm";
 import {
   InsertPronunciationDTO,
   InsertSubTranslationDTO,
@@ -35,25 +35,6 @@ type Tx = PgTransaction<
   typeof import("../schemas"),
   ExtractTablesWithRelations<typeof import("../schemas")>
 >;
-
-export const findFirst = async ({ word, lang }: FindDTO) => {
-  return db.query.words.findFirst({
-    where: and(...[eq(words.lang, lang), eq(words.word, word)]),
-    with: {
-      translations: {
-        with: {
-          wordPhoto: true,
-          subTranslations: {
-            with: {
-              wordPhoto: true,
-            },
-          },
-        },
-      },
-      pronunciations: true,
-    },
-  });
-};
 
 const insertSubTranslationsTx = async (
   translationId: number,
@@ -121,5 +102,48 @@ export const insertOne = async (dto: InsertWordDTO) => {
     if (pronunciations.length) {
       await insertPronunciationsTx(ids[0].wordId, pronunciations, tx);
     }
+  });
+};
+
+export const findFirst = async ({ word, lang }: FindDTO) => {
+  return db.query.words.findFirst({
+    where: and(...[eq(words.lang, lang), eq(words.word, word)]),
+    with: {
+      translations: {
+        with: {
+          wordPhoto: true,
+          subTranslations: {
+            with: {
+              wordPhoto: true,
+            },
+          },
+        },
+      },
+      pronunciations: true,
+    },
+  });
+};
+
+export const fullTextSearch = async (s: string, lang: string) => {
+  return db.query.words.findMany({
+    where: and(
+      ...[
+        eq(words.lang, lang),
+        sql`to_tsvector('english', ${words.word}) @@ to_tsquery('english', ${s})`,
+      ],
+    ),
+    with: {
+      translations: {
+        with: {
+          wordPhoto: true,
+          subTranslations: {
+            with: {
+              wordPhoto: true,
+            },
+          },
+        },
+      },
+      pronunciations: true,
+    },
   });
 };

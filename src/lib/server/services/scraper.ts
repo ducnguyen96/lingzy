@@ -42,7 +42,7 @@ type Translation = {
 
 type NlpExactExamplesItem = {
   examples: string[][][];
-  subTranslationExamples?: string[][][];
+  subTranslationExamples?: string[][][][];
 };
 
 type LGStatic = {
@@ -55,8 +55,7 @@ type LGStatic = {
   nlpExactExamplesItem: NlpExactExamplesItem[];
 };
 
-async function downloadFile(url: string, mime: "audio" | "photo") {
-  const { path } = getFilename(mime);
+async function downloadFile(url: string, path: string) {
   const filepath = process.cwd() + `/public${path}`;
   https
     .get(url, (response) => {
@@ -118,7 +117,8 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
       .each((_, posHeader) => {
         $(posHeader)
           .find("span.dpron-i")
-          .each((_, dpronI) => {
+          .each((idx, dpronI) => {
+            if (idx > 1) return;
             const src = $(dpronI).find("audio source").attr("src") || "";
             const originUrl = `${baseUrl}${src}`;
             const { path: audio } = getFilename("audio");
@@ -130,7 +130,7 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
             };
             pronunciations.push(pronunciation);
 
-            downloadFile(originUrl, "audio");
+            downloadFile(originUrl, audio);
           });
       });
 
@@ -152,11 +152,11 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
             photo: photoPath,
             thumbnail: thumbPath,
           };
-          downloadFile(photoOrigurl, "photo");
-          downloadFile(thumbOrigurl, "photo");
+          downloadFile(photoOrigurl, photoPath);
+          downloadFile(thumbOrigurl, thumbPath);
         }
         if (ts["subTranslations"]) {
-          subTranslations = ts["subTranslations"].map((st) => {
+          subTranslations = ts["subTranslations"].map((st, stIx) => {
             let wordPhoto;
             if (st["wordPhoto"]) {
               const photoOrigurl = st["wordPhoto"]["photo"];
@@ -170,17 +170,16 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
                 thumbnail: thumbPath,
               };
 
-              downloadFile(photoOrigurl, "photo");
-              downloadFile(thumbOrigurl, "photo");
+              downloadFile(photoOrigurl, photoPath);
+              downloadFile(thumbOrigurl, thumbPath);
             }
+
+            const sExamples = examples[idx]["subTranslationExamples"] || [];
 
             return {
               level: st["level"],
               translation: st["translation"],
-              examples:
-                examples[idx]["subTranslationExamples"]?.map((ex) =>
-                  ex[0].join(""),
-                ) || [],
+              examples: sExamples[stIx].map((ex) => ex[0].join("")),
               wordPhoto,
               parentId: 1,
             };

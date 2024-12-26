@@ -12,9 +12,22 @@ export default {
     {
       pattern: /(text|bg)-(green|blue|orange|cyan|pink|gray|purple)-(400)/,
     },
+    {
+      pattern:
+        /(text|bg)-(violet|indigo|emerald|yellow|red)-(50|100|300|600|900|950)/,
+    },
   ],
   theme: {
     extend: {
+      keyframes: {
+        wiggle: {
+          "0%, 100%": { transform: "rotate(-5deg)" },
+          "50%": { transform: "rotate(5deg)" },
+        },
+      },
+      animation: {
+        wiggle: "wiggle 2s ease-in-out infinite",
+      },
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
         mono: ["var(--font-geist-mono)", ...fontFamily.mono],

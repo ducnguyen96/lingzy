@@ -24,22 +24,22 @@ import Link from "next/link";
 const menuItems = [
   {
     title: "daily words",
-    href: "/daily-words",
+    href: "/dashboard/overview",
     icon: { icon: CalendarSync },
   },
   {
     title: "my word lists",
-    href: "/word-lists",
+    href: "/dashboard/my-category",
     icon: { icon: Folders },
   },
   {
     title: "bookmarks",
-    href: "/bookmarks",
+    href: "/dashboard/bookmarks",
     icon: { icon: Bookmark },
   },
   {
     title: "stats",
-    href: "/stats",
+    href: "/dashboard/my-stats",
     icon: { icon: ChartColumn },
   },
 ];

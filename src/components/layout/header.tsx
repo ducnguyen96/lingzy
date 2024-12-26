@@ -21,7 +21,7 @@ export default function Header() {
     <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-4 py-10 md:p-12 lg:px-28 xl:px-52 2xl:px-80">
       <div className="flex items-center gap-4">
         <Link href="/" prefetch={true}>
-          <div className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#2666C8] via-[#9465e7] to-[#9465E7] dark:from-[#56AEFF] dark:to-55% dark:to-[#B57AFF] animate-gradient-text bg-gradient-size">
+          <div className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 animate-gradient-text bg-gradient-size drop-shadow">
             {SITE_NAME}
           </div>
         </Link>

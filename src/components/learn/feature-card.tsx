@@ -15,7 +15,7 @@ export function FeatureCard(props: FeatureCardProps) {
       href={href}
       className={cn(
         className,
-        "flex flex-col justify-between rounded-3xl p-4",
+        "flex flex-col justify-between rounded-3xl p-4 drop-shadow-lg",
         color.background,
       )}
     >

@@ -14,7 +14,7 @@ const { SITE_NAME } = process.env;
 
 export default function Header() {
   return (
-    <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-4 md:p-12 lg:px-28 xl:px-52">
+    <header className="flex h-16 shrink-0 items-center justify-between gap-2 px-4 py-10 md:p-12 lg:px-28 xl:px-52 2xl:px-80">
       <div className="flex items-center gap-4">
         <Link href="/" prefetch={true}>
           <div className="font-bold text-xl lg:text-2xl text-blue-500">
@@ -37,7 +37,7 @@ export default function Header() {
       <div className="flex items-center gap-2">
         <ModeToggle />
         <SidebarTrigger className="md:hidden" />
-        <div className="hidden md:block">
+        <div className="hidden md:block cursor-pointer">
           <UserButton />
         </div>
       </div>

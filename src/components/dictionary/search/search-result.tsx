@@ -12,11 +12,9 @@ export default function SearchResult() {
           [...Array(Math.floor(Math.random() * 8) + 1)].map((_, idx) => (
             <Skeleton key={idx} className="h-60 rounded-lg" />
           ))}
-        {wordEntities
-          .sort((a, b) => a.word.length - b.word.length)
-          .map((word) => (
-            <SearchResultItem key={word.id} {...word} />
-          ))}
+        {wordEntities.map((word) => (
+          <SearchResultItem key={word.id} {...word} />
+        ))}
       </div>
       {debounced && !isPending && !wordEntities.length && <NoResult />}
     </>

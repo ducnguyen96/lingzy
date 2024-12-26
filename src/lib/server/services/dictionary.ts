@@ -1,4 +1,4 @@
-import { and, eq, ExtractTablesWithRelations, sql } from "drizzle-orm";
+import { and, eq, ExtractTablesWithRelations, like, sql } from "drizzle-orm";
 import {
   InsertPronunciationDTO,
   InsertSubTranslationDTO,
@@ -128,12 +128,7 @@ export const findFirst = async ({ word, lang }: FindDTO) => {
 
 export const fullTextSearch = async (s: string, lang: string) => {
   return db.query.words.findMany({
-    where: and(
-      ...[
-        eq(words.lang, lang),
-        sql`to_tsvector('english', ${words.word}) @@ to_tsquery('english', ${s})`,
-      ],
-    ),
+    where: and(...[eq(words.lang, lang), like(words.word, `${s}%`)]),
     with: {
       translations: {
         with: {

@@ -1,4 +1,4 @@
-import DictSearch from "@/components/dictionary/search";
+import DictSearch from "@/components/dictionary/search/search";
 
 export default function Layout({
   children,

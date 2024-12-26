@@ -15,7 +15,9 @@ import {
 
 interface DictSearchProps {
   search: string;
+  debounced: string;
   setSearch: Dispatch<SetStateAction<string>>;
+  formAction: () => void;
   wordEntities: WordEntity[];
   isPending: boolean;
 }
@@ -23,7 +25,9 @@ interface DictSearchProviderProps extends PropsWithChildren {}
 
 const defaultContext: DictSearchProps = {
   setSearch: (_) => {},
+  formAction: () => {},
   search: "",
+  debounced: "",
   wordEntities: [],
   isPending: false,
 };
@@ -68,7 +72,14 @@ export const DictSearchProvider = ({ children }: DictSearchProviderProps) => {
 
   return (
     <DictSearchContext.Provider
-      value={{ setSearch, search, wordEntities: state, isPending }}
+      value={{
+        setSearch,
+        search,
+        wordEntities: state,
+        isPending,
+        formAction,
+        debounced: debouncedTerm,
+      }}
     >
       {children}
     </DictSearchContext.Provider>

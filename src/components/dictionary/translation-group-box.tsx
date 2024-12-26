@@ -1,6 +1,6 @@
+import { wordTypeToColor } from "@/config/features";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
-import { wordTypeToColor } from "./colors";
 
 type TranslationGroupBoxProps = {
   className?: string;

@@ -211,7 +211,10 @@ const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
   }
 };
 
-export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
+export const scrapeLangeek = async (
+  { lang, word }: FindDTO,
+  scrapeRelated?: boolean,
+) => {
   const res = await fetch(
     `https://api.langeek.co/v1/cs/${lang}/word/?term=${word}&filter=,inCategory,photo`,
   );
@@ -222,11 +225,8 @@ export const scrapeLangeek = async ({ lang, word }: FindDTO) => {
   const ps = json.map(async ({ id, entry }) => {
     if (entry === word) {
       await scrapeLangeekWord(lang, entry, id);
-    } else {
-      return true;
-      // TODO: scrape related words
-
-      // scrapeLangeekWord(lang, entry, id);
+    } else if (scrapeRelated) {
+      scrapeLangeekWord(lang, entry, id);
     }
   });
 

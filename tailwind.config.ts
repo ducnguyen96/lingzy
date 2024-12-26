@@ -55,10 +55,40 @@ export default {
           "50%": { backgroundPosition: "100% 50%" },
           "100%": { backgroundPosition: "0% 50%" },
         },
+        circling: {
+          "0%": {
+            transform: "rotate(0deg) translate(0, -3px) rotate(0deg)",
+          },
+          "12.5%": {
+            transform: "rotate(45deg) translate(0, -3px) rotate(-45deg)",
+          },
+          "25%": {
+            transform: "rotate(90deg) translate(0, -3px) rotate(-90deg)",
+          },
+          "37.5%": {
+            transform: "rotate(135deg) translate(0, -3px) rotate(-135deg)",
+          },
+          "50%": {
+            transform: "rotate(180deg) translate(0, -3px) rotate(-180deg)",
+          },
+          "62.5%": {
+            transform: "rotate(225deg) translate(0, -3px) rotate(-225deg)",
+          },
+          "75%": {
+            transform: "rotate(270deg) translate(0, -3px) rotate(-270deg)",
+          },
+          "87.5%": {
+            transform: "rotate(315deg) translate(0, -3px) rotate(-315deg)",
+          },
+          "100%": {
+            transform: "rotate(360deg) translate(0, -3px) rotate(-360deg)",
+          },
+        },
       },
       animation: {
         wiggle: "wiggle 2s ease-in-out infinite",
         "gradient-text": "gradient-move 3s infinite linear",
+        circling: "circling 1s infinite linear",
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],

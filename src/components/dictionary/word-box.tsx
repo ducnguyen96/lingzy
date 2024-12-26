@@ -2,7 +2,7 @@ import { PronunciationEntity } from "@/lib/server/services/dictionary";
 import PronunciationButton from "../audio-button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { wordTypeToColor } from "./colors";
+import { wordTypeToColor } from "@/config/features";
 
 type WordBoxProps = {
   word: string;

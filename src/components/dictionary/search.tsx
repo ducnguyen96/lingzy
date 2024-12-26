@@ -47,57 +47,66 @@ export default function DictSearch() {
   return (
     <div className="py-10">
       <div className="md:px-16 lg:px-32 xl:px-64">
-        <Input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value.trim())}
-          placeholder="Search"
-          className="rounded-3xl p-6"
-        />
+        <div className="text-center">
+          <Input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value.trim())}
+            placeholder="Search"
+            className="rounded-3xl p-6"
+          />
+          <p className="mt-6 px-6 font-light">
+            An online dictionary for learners of American English, offering free
+            access to definitions, images, example sentences, synonyms, and more
+          </p>
+        </div>
       </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
         {isPending &&
           [...Array(Math.floor(Math.random() * 8) + 1)].map((_, idx) => (
             <Skeleton key={idx} className="h-60 rounded-lg" />
           ))}
         {debouncedTerm && !isPending && !state.length && <p>No result</p>}
-        {state.map((word) => (
-          <Link
-            key={word.id}
-            href={`/dictionary/en/${word.word}`}
-            className={
-              searchTerm ? "flex flex-col p-4 border rounded-lg" : "hidden"
-            }
-            onClick={() => setSearchTerm("")}
-          >
-            <Image
-              src={
-                word.translations[0].wordPhoto?.thumbnail ||
-                "/assets/photo/no-photo.png"
+        {state
+          .sort((a, b) => a.word.length - b.word.length)
+          .map((word) => (
+            <Link
+              key={word.id}
+              href={`/dictionary/en/${word.word}`}
+              className={
+                searchTerm ? "flex flex-col p-4 border rounded-lg" : "hidden"
               }
-              width={256}
-              height={256}
-              alt={word.word}
-              className="h-36 m-auto rounded-lg"
-            />
-            <div className="flex flex-1 flex-col justify-between space-y-2">
-              <div className="flex flex-col space-y-2">
-                <p className="font-semibold">{word.word}</p>
-                <p className="text-muted-foreground">
-                  {word.translations[0].translation}
+              onClick={() => setSearchTerm("")}
+            >
+              <Image
+                src={
+                  word.translations[0].wordPhoto?.thumbnail ||
+                  "/assets/photo/no-photo.png"
+                }
+                width={256}
+                height={256}
+                alt={word.word}
+                className="h-36 m-auto rounded-lg"
+              />
+              <div className="flex flex-1 flex-col justify-between space-y-2">
+                <div className="flex flex-col space-y-2">
+                  <p className="font-semibold">{word.word}</p>
+                  <p className="text-muted-foreground">
+                    {word.translations[0].translation}
+                  </p>
+                </div>
+                <p
+                  className={cn(
+                    "font-semibold",
+                    wordTypeToColor(word.translations[0].type),
+                  )}
+                >
+                  [ {word.translations[0].type} ]
                 </p>
               </div>
-              <p
-                className={cn(
-                  "font-semibold",
-                  wordTypeToColor(word.translations[0].type),
-                )}
-              >
-                [ {word.translations[0].type} ]
-              </p>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
       </div>
     </div>
   );

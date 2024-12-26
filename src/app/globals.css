@@ -86,3 +86,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .bg-gradient-size {
+    background-size: 200% 200%;
+  }
+}

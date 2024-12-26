@@ -50,9 +50,15 @@ export default {
           "0%, 100%": { transform: "rotate(-5deg)" },
           "50%": { transform: "rotate(5deg)" },
         },
+        "gradient-move": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
       },
       animation: {
         wiggle: "wiggle 2s ease-in-out infinite",
+        "gradient-text": "gradient-move 3s infinite linear",
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],

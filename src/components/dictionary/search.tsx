@@ -73,12 +73,12 @@ export default function DictSearch() {
             <Image
               src={
                 word.translations[0].wordPhoto?.thumbnail ||
-                "/assets/photo/no-photo.jpg"
+                "/assets/photo/no-photo.png"
               }
               width={256}
               height={256}
               alt={word.word}
-              className="h-36 w-full rounded-lg"
+              className="h-36 m-auto rounded-lg"
             />
             <div className="flex flex-1 flex-col justify-between space-y-2">
               <div className="flex flex-col space-y-2">

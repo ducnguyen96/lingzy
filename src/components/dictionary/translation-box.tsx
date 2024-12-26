@@ -38,7 +38,7 @@ function Box(props: BoxProps) {
             src={wordPhoto.photo}
             width={300}
             height={300}
-            className="h-40 md:h-56 w-52"
+            className="h-40 md:h-56 w-56 p-4 rounded-3xl"
             alt={`${title}-img`}
           />
         )}

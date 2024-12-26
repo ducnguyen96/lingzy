@@ -21,7 +21,7 @@ export function SearchResultItem(props: WordEntity) {
         width={256}
         height={256}
         alt={word}
-        className="h-36 m-auto rounded-lg"
+        className="h-36 m-auto rounded-3xl"
       />
       <div className="flex flex-1 flex-col justify-between space-y-2">
         <div className="flex flex-col space-y-2">

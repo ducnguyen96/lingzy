@@ -39,7 +39,7 @@ export default function WordBox({
             </Link>
           ))}
         </div>
-        <p className="text-xs font-semibold text-muted-foreground">
+        <p className="text-xs text-center font-semibold text-muted-foreground">
           Definition & Meaning of &quot;{word}&quot;
         </p>
       </div>

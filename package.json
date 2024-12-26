@@ -12,6 +12,7 @@
     "drop": "drizzle-kit drop"
   },
   "dependencies": {
+    "@auth/drizzle-adapter": "^1.7.4",
     "@next/env": "^15.1.2",
     "@radix-ui/react-avatar": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.4",

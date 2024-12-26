@@ -1,6 +1,40 @@
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
+const safelistLiteral: string[] = [];
+const genClass = (
+  prefix: string[],
+  colors: string[],
+  weights: number[],
+  dark?: boolean,
+) => {
+  weights.forEach((weight) => {
+    colors.forEach((color) => {
+      prefix.forEach((pref) => {
+        safelistLiteral.push(`${pref}-${color}-${weight}`);
+        if (dark) safelistLiteral.push(`dark:${pref}-${color}-${weight}`);
+      });
+    });
+  });
+};
+
+// wordType
+const wordTypeColors = [
+  "green",
+  "blue",
+  "orange",
+  "cyan",
+  "pink",
+  "gray",
+  "purple",
+];
+const wordTypeWeights = [400];
+genClass(["text", "bg"], wordTypeColors, wordTypeWeights);
+
+const learnFeatureColors = ["violet", "indigo", "emerald", "yellow", "red"];
+const learnFeatureWeights = [50, 100, 300, 600, 900, 950];
+genClass(["text", "bg"], learnFeatureColors, learnFeatureWeights, true);
+
 export default {
   darkMode: ["class"],
   content: [
@@ -8,15 +42,7 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  safelist: [
-    {
-      pattern: /(text|bg)-(green|blue|orange|cyan|pink|gray|purple)-(400)/,
-    },
-    {
-      pattern:
-        /(text|bg)-(violet|indigo|emerald|yellow|red)-(50|100|300|600|900|950)/,
-    },
-  ],
+  safelist: safelistLiteral,
   theme: {
     extend: {
       keyframes: {

@@ -4,12 +4,12 @@ import type { AdapterAccountType } from "next-auth/adapters";
 import { users } from "./users";
 
 export const userAccounts = pgTable(
-  "userAccounts",
+  "user_accounts",
   {
     userId: text("userId").notNull(),
     type: text("type").$type<AdapterAccountType>().notNull(),
     provider: text("provider").notNull(),
-    providerAccountId: text("providerAccountId").notNull(),
+    providerAccountId: text("provider_account_id").notNull(),
     refresh_token: text("refresh_token"),
     access_token: text("access_token"),
     expires_at: integer("expires_at"),

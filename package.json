@@ -9,7 +9,8 @@
     "lint": "next lint",
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",
-    "drop": "drizzle-kit drop"
+    "drop": "drizzle-kit drop",
+    "preinstall": "mkdir -p public/assets/{photo,audio}"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.4",

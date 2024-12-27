@@ -1,1 +1,0 @@
-CREATE INDEX "word_idx" ON "words" USING btree ("word");

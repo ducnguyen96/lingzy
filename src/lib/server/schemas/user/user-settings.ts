@@ -4,11 +4,11 @@ import { users } from "./users";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const userSettings = pgTable("userSettings", {
+export const userSettings = pgTable("user_settings", {
   id: serial("id").primaryKey(),
-  userId: text("userId").notNull(),
   theme: text("theme").notNull().default("system"),
-  nativeLanguage: text("nativeLanguage").notNull().default("en"),
+  nativeLanguage: text("native_language").notNull().default("en"),
+  userId: text("user_id").notNull(),
 });
 
 export const userSettingsRelations = relations(userSettings, ({ one }) => ({

@@ -1,10 +1,11 @@
 import { relations } from "drizzle-orm";
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import { userCards } from "./user-cards";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { userSettings } from "./user-settings";
 import { userAccounts } from "./user-accounts";
+import { userDailyWords } from "./user-daily-words";
+import { userWordLists } from "./user-word-lists";
 
 export const users = pgTable("users", {
   id: text("id")
@@ -12,14 +13,15 @@ export const users = pgTable("users", {
     .$defaultFn(() => crypto.randomUUID()),
   name: text("name").notNull(),
   email: text("email").unique().notNull(),
-  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  emailVerified: timestamp("email_verified", { mode: "date" }),
   image: text("image").notNull(),
 });
 
 export const usersRelations = relations(users, ({ many, one }) => ({
-  cards: many(userCards),
   setting: one(userSettings),
   accounts: many(userAccounts),
+  dailyWords: many(userDailyWords),
+  wordLists: many(userWordLists),
 }));
 
 export const insertUserSchema = createInsertSchema(users);

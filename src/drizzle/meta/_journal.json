@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1735056700046,
-      "tag": "0000_nasty_dorian_gray",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1735209833450,
-      "tag": "0001_empty_mephisto",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1735231593281,
-      "tag": "0002_glamorous_zuras",
+      "when": 1735275802834,
+      "tag": "0000_nostalgic_red_skull",
       "breakpoints": true
     }
   ]

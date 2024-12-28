@@ -49,7 +49,7 @@ export default function UserButton() {
 
   switch (status) {
     case "loading":
-      return <Skeleton className="h-12 w-12 rounded-full" />;
+      return <Skeleton className="h-8 w-8 rounded-full" />;
 
     case "unauthenticated":
       return (

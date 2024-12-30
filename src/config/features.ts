@@ -87,6 +87,8 @@ export const wordTypeToColor = (typ: string, prefix: string = "text") => {
       return prefix + "-gray-400";
     case "sentence":
       return prefix + "-purple-400";
+    case "adjective_adverb":
+      return prefix + "-orange-400";
     default:
       return prefix + "-foreground";
   }

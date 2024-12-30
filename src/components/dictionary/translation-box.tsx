@@ -5,10 +5,11 @@ import {
 import { SwatchBookIcon } from "lucide-react";
 import Image from "next/image";
 import { ReactNode } from "react";
+import UserActionBlock from "./user-action-block";
 
 function DescriptionBox(props: { position: string; desc: string }) {
   return (
-    <div className="flex gap-2">
+    <div className="flex items-center gap-2">
       <p className="rounded-lg px-2 py-1 font-semibold border w-fit h-fit">
         {props.position}
       </p>
@@ -19,6 +20,7 @@ function DescriptionBox(props: { position: string; desc: string }) {
 
 type BoxProps = {
   idx: string;
+  id: number;
   wordPhoto?: WordPhotoEntity;
   translation: string;
   title?: string;
@@ -27,12 +29,15 @@ type BoxProps = {
 };
 
 function Box(props: BoxProps) {
-  const { idx, wordPhoto, translation, title, examples, SubTranslations } =
+  const { idx, id, wordPhoto, translation, title, examples, SubTranslations } =
     props;
   return (
     <div className="border rounded-2xl p-4 space-y-4">
       <div className="flex flex-col md:flex-row justify-between">
-        <DescriptionBox position={idx} desc={translation} />
+        <div>
+          <DescriptionBox position={idx} desc={translation} />
+          <UserActionBlock translationId={id} />
+        </div>
         {wordPhoto && (
           <Image
             src={wordPhoto.photo}
@@ -66,7 +71,7 @@ export default function TranslationBox(props: {
   idx: number;
 }) {
   const { idx, entity } = props;
-  const { subTranslations } = entity;
+  const { subTranslations, id } = entity;
   return (
     <Box
       idx={idx.toString()}
@@ -74,7 +79,7 @@ export default function TranslationBox(props: {
       SubTranslations={
         <div className="space-y-4">
           {subTranslations.map((item, sIdx) => (
-            <Box key={item.id} idx={`${idx}.${sIdx + 1}`} {...item} />
+            <Box key={item.id} idx={`${idx}.${sIdx + 1}`} {...item} id={id} />
           ))}
         </div>
       }

@@ -40,7 +40,7 @@ export default function NoResult() {
     <div className="text-center mt-20">
       <div className="space-y-8 text-muted-foreground">
         <p className="text-5xl">(⁠╥⁠﹏⁠╥⁠)</p>
-        <p className="text-2xl">Sorry, we couldn't find any results.</p>
+        <p className="text-2xl">Sorry, we couldn&apos;t find any results.</p>
         <div className="flex flex-col items-center">
           <div className="flex items-center">
             <span>Scrape the internet?</span>

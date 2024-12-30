@@ -3,21 +3,27 @@ import PronunciationButton from "../audio-button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { wordTypeToColor } from "@/config/features";
+import UserActionBlock from "./user-action-block";
 
 type WordBoxProps = {
   word: string;
+  translationId: number;
   pronunciations: PronunciationEntity[];
   translations: { type: string; quant: number }[];
 };
 export default function WordBox({
   word,
+  translationId,
   pronunciations,
   translations = [],
 }: WordBoxProps) {
   return (
     <div className="rounded-2xl border flex flex-col">
       <div className="p-4 pb-0">
-        <p className="text-2xl font-semibold capitalize">{word}</p>
+        <div className="flex items-center justify-between">
+          <p className="text-2xl font-semibold capitalize">{word}</p>
+          <UserActionBlock translationId={translationId} />
+        </div>
       </div>
       <div className="p-4">
         {pronunciations.map((item) => (

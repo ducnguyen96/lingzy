@@ -34,6 +34,7 @@ export function DictContent(props: WordEntity) {
     <div id="dict-content" className="space-y-4 md:space-y-8">
       <WordBox
         word={word}
+        translationId={translations[0].id}
         pronunciations={pronunciations}
         translations={groups.map(({ type, translations }) => ({
           type,

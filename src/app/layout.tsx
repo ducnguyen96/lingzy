@@ -8,6 +8,7 @@ import { fontMono, fontSans } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { META_THEME_COLORS } from "@/config/site";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Lingzy",
@@ -51,7 +52,8 @@ export default function RootLayout({
               <AppSidebar />
               <SidebarInset>
                 <Header />
-                <main className="p-4 relative">{children}</main>
+                <div className="p-4 relative">{children}</div>
+                <Toaster />
               </SidebarInset>
             </SidebarProvider>
           </SessionProvider>

@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, lte } from "drizzle-orm";
 import db from "../db";
 import { DBUser } from "./user";
 import { userDailyWords } from "../schemas";
@@ -13,7 +13,7 @@ export const addToDailyWords = async (user: DBUser, translationId: number) => {
         ],
       ),
     });
-    if (!found) return;
+    if (found) return;
 
     await tx.insert(userDailyWords).values({
       userId: user.id,
@@ -23,5 +23,16 @@ export const addToDailyWords = async (user: DBUser, translationId: number) => {
       ef: 2.5,
       nextReview: new Date().toISOString(),
     });
+  });
+};
+
+export const getTodayWords = async (userId: string) => {
+  return db.query.userDailyWords.findMany({
+    where: and(
+      ...[
+        eq(userDailyWords.userId, userId),
+        lte(userDailyWords.nextReview, new Date().toISOString()),
+      ],
+    ),
   });
 };

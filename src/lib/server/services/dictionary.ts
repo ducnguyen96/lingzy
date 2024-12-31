@@ -1,4 +1,4 @@
-import { and, eq, ExtractTablesWithRelations, like, sql } from "drizzle-orm";
+import { and, eq, ExtractTablesWithRelations, like } from "drizzle-orm";
 import {
   InsertPronunciationDTO,
   InsertSubTranslationDTO,

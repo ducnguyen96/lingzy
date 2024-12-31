@@ -21,6 +21,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return dbUser;
     },
     session({ session, token }) {
+      // @ts-expect-error refer to the dbUser on jwt callback above
       session.user = token;
       return session;
     },

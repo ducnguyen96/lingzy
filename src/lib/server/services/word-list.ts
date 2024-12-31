@@ -1,4 +1,4 @@
-import { and, DrizzleError, eq } from "drizzle-orm";
+import { DrizzleError, eq } from "drizzle-orm";
 import db from "../db";
 import { insertUserWordListDTO, userWordLists } from "../schemas";
 import { DBUser } from "./user";

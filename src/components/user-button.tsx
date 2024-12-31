@@ -10,7 +10,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import {
   Bookmark,
@@ -20,6 +19,8 @@ import {
   LogOut,
 } from "lucide-react";
 import Link from "next/link";
+import { Skeleton } from "./ui/skeleton";
+import { DailyWordBadge } from "./word-count-badge";
 
 const menuItems = [
   {
@@ -45,7 +46,7 @@ const menuItems = [
 ];
 
 export default function UserButton() {
-  const { data: session, status } = useSession();
+  const { status, data } = useSession();
 
   switch (status) {
     case "loading":
@@ -55,9 +56,8 @@ export default function UserButton() {
       return (
         <Button onClick={() => signIn("google")}>Signin With Google</Button>
       );
-
     default:
-      const user = session.user!;
+      const user = data.user!;
       const userImg = user.image!;
       const userImgAlt = `${user.name}-logo`;
       return (
@@ -88,9 +88,15 @@ export default function UserButton() {
             <DropdownMenuSeparator />
             {menuItems.map(({ title, href, icon }, idx) => (
               <DropdownMenuItem key={idx}>
-                <Link href={href} className="flex items-center gap-4 w-full">
-                  <icon.icon size={16} />
-                  <p className="capitalize">{title}</p>
+                <Link
+                  href={href}
+                  className="flex items-center justify-between w-full"
+                >
+                  <div className="flex items-center gap-2">
+                    <icon.icon size={16} />
+                    <p className="capitalize">{title}</p>
+                  </div>
+                  {idx === 0 ? <DailyWordBadge /> : null}
                 </Link>
               </DropdownMenuItem>
             ))}

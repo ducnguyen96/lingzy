@@ -1,5 +1,4 @@
-import { DBUser } from "@/lib/server/services/user/user-service";
-import { DefaultSession } from "next-auth";
+import { DBUser } from "@/lib/server/services/user";
 
 declare module "next-auth" {
   interface Session extends DefaultSessionefaultSession {

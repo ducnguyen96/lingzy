@@ -3,7 +3,7 @@
 import { PronunciationEntity } from "@/lib/server/services/dictionary";
 import { Volume2 } from "lucide-react";
 
-const countryEmoji: Record<string, string> = {
+export const countryEmoji: Record<string, string> = {
   uk: "🇬🇧",
   us: "🇺🇸",
 };

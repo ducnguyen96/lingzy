@@ -52,7 +52,7 @@ export default function RootLayout({
               <AppSidebar />
               <SidebarInset>
                 <Header />
-                <div className="p-4 relative">{children}</div>
+                <div className="p-4 relative max-w-[100vw]">{children}</div>
                 <Toaster />
               </SidebarInset>
             </SidebarProvider>

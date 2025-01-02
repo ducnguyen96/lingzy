@@ -1,5 +1,5 @@
 {
-  "id": "28a36ffc-b966-4546-869a-7443a3848e62",
+  "id": "6cc5e891-9da7-4105-931d-f96772488c61",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -373,6 +373,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "lang": {
+          "name": "lang",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "translation_id": {
           "name": "translation_id",
           "type": "integer",
@@ -415,6 +421,12 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -441,6 +453,13 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'system'"
+        },
+        "learning_lang": {
+          "name": "learning_lang",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'en'"
         },
         "native_language": {
           "name": "native_language",
@@ -528,7 +547,8 @@
           "name": "state",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'pending'"
         },
         "description": {
           "name": "description",
@@ -538,7 +558,7 @@
         },
         "translation_ids": {
           "name": "translation_ids",
-          "type": "text[]",
+          "type": "integer[]",
           "primaryKey": false,
           "notNull": true,
           "default": "'{}'::integer[]"

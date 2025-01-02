@@ -2,7 +2,10 @@ import { eq } from "drizzle-orm";
 import db from "../db";
 import { InsertUserDTO, users, userSettings } from "../schemas";
 
-export type DBUser = NonNullable<Awaited<ReturnType<typeof getUserById>>>;
+type User = NonNullable<Awaited<ReturnType<typeof getUserById>>>;
+export type DBUser = Omit<User, "setting"> & {
+  setting: NonNullable<User["setting"]>;
+};
 
 export const getUserById = async (id: string) => {
   return db.query.users.findFirst({

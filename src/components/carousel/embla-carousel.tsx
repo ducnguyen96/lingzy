@@ -2,8 +2,9 @@
 
 import { PropsWithChildren, useCallback, useEffect, useRef } from "react";
 import { EmblaCarouselType, EmblaEventType } from "embla-carousel";
-import "./carousel.css";
+import "./embla-carousel.css";
 import { EmblaViewportRefType } from "embla-carousel-react";
+import { cn } from "@/lib/utils";
 
 const TWEEN_FACTOR_BASE = 0.1;
 
@@ -11,12 +12,20 @@ const numberWithinRange = (number: number, min: number, max: number): number =>
   Math.min(Math.max(number, min), max);
 
 interface PropType extends PropsWithChildren {
+  className?: string;
   emblaRef: EmblaViewportRefType;
   emblaApi?: EmblaCarouselType;
+  effect?: string[];
 }
 
 export default function EmblaCarousel(props: PropType) {
-  const { children, emblaRef, emblaApi } = props;
+  const {
+    children,
+    emblaRef,
+    emblaApi,
+    className,
+    effect = ["opacity", "scale"],
+  } = props;
   const tweenFactor = useRef(0);
   const tweenNodes = useRef<HTMLElement[]>([]);
 
@@ -66,8 +75,9 @@ export default function EmblaCarousel(props: PropType) {
           const scale = numberWithinRange(tweenValue, 0, 1).toString();
           const opacity = numberWithinRange(tweenValue, 0, 1).toString();
 
-          tweenNode.style.opacity = opacity;
-          tweenNode.style.transform = `scale(${scale})`;
+          if (effect.includes("opacity")) tweenNode.style.opacity = opacity;
+          if (effect.includes("scale"))
+            tweenNode.style.transform = `scale(${scale})`;
         });
       });
     },
@@ -90,9 +100,9 @@ export default function EmblaCarousel(props: PropType) {
   }, [emblaApi, tweenScale]);
 
   return (
-    <div className="embla">
-      <div className="embla__viewport" ref={emblaRef}>
-        <div className="embla__container">{children}</div>
+    <div className={cn("m-auto", className)}>
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex">{children}</div>
       </div>
     </div>
   );

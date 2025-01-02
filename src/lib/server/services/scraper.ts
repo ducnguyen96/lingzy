@@ -119,7 +119,7 @@ const scrapeCambridgeWord = async (word: string) => {
 
 const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
   const found = await db.query.words.findFirst({
-    where: and(...[eq(words.lang, lang), eq(words.word, word)]),
+    where: and(eq(words.lang, lang), eq(words.word, word)),
   });
   if (found) return;
 

@@ -31,6 +31,7 @@ function UserActionButton(props: UserActionButtonProps) {
             size="icon"
             disabled={isPending}
             formAction={formAction}
+            className="[&_svg]:size-5"
           >
             {isPending ? <Loader2 className="animate-spin" /> : icon}
           </Button>

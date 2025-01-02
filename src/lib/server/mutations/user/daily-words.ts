@@ -8,6 +8,6 @@ import { unauthorized } from "next/navigation";
 export const addToDailyWords = async (translationId: number) => {
   const session = await auth();
   if (!session || !session.user) unauthorized();
-  await services.addToDailyWords(session.user, translationId);
+  await services.insertToDailyWords(session.user, translationId);
   return { message: "Word is added to DailyWords successfully !", data: {} };
 };

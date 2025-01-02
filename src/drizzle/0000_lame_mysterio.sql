@@ -61,18 +61,21 @@ CREATE TABLE "user_accounts" (
 CREATE TABLE "user_daily_words" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"user_id" text NOT NULL,
+	"lang" text NOT NULL,
 	"translation_id" integer NOT NULL,
 	"interval" smallint NOT NULL,
 	"repetition" smallint NOT NULL,
 	"ef" real NOT NULL,
 	"next_review" date NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp
+	"updated_at" timestamp,
+	"completed_at" timestamp
 );
 --> statement-breakpoint
 CREATE TABLE "user_settings" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"theme" text DEFAULT 'system' NOT NULL,
+	"learning_lang" text DEFAULT 'en' NOT NULL,
 	"native_language" text DEFAULT 'en' NOT NULL,
 	"user_id" text NOT NULL
 );
@@ -88,9 +91,9 @@ CREATE TABLE "word_list_scores" (
 CREATE TABLE "user_word_lists" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
-	"state" text NOT NULL,
+	"state" text DEFAULT 'pending' NOT NULL,
 	"description" text,
-	"translation_ids" text[] DEFAULT '{}'::integer[] NOT NULL,
+	"translation_ids" integer[] DEFAULT '{}'::integer[] NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp,
 	"user_id" text NOT NULL

@@ -15,6 +15,7 @@ import { translations } from "../dictionary/translations";
 export const userDailyWords = pgTable("user_daily_words", {
   id: serial("id").primaryKey(),
   userId: text("user_id").notNull(),
+  lang: text("lang").notNull(),
   translationId: integer("translation_id").notNull(),
   interval: smallint("interval").notNull(),
   repetition: smallint("repetition").notNull(),
@@ -22,6 +23,7 @@ export const userDailyWords = pgTable("user_daily_words", {
   nextReview: date("next_review").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at"),
+  completedAt: timestamp("completed_at"),
 });
 
 export const userDailyWordsRelations = relations(userDailyWords, ({ one }) => ({

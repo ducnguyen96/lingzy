@@ -1,13 +1,5 @@
-.embla {
-  margin: auto;
-}
-.embla__viewport {
-  overflow: hidden;
-}
-.embla__container {
-  display: flex;
-}
 .embla__slide {
+  width: calc(100vw-32px);
   transform: translate3d(0, 0, 0);
   display: flex;
   flex-grow: 0;

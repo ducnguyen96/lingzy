@@ -7,6 +7,7 @@ import { z } from "zod";
 export const userSettings = pgTable("user_settings", {
   id: serial("id").primaryKey(),
   theme: text("theme").notNull().default("system"),
+  learningLang: text("learning_lang").notNull().default("en"),
   nativeLanguage: text("native_language").notNull().default("en"),
   userId: text("user_id").notNull(),
 });

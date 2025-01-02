@@ -107,7 +107,7 @@ export const insertOne = async (dto: InsertWordDTO) => {
 
 export const findFirst = async ({ word, lang }: FindDTO) => {
   return db.query.words.findFirst({
-    where: and(...[eq(words.lang, lang), eq(words.word, word)]),
+    where: and(eq(words.lang, lang), eq(words.word, word)),
     with: {
       translations: {
         with: {
@@ -128,7 +128,7 @@ export const findFirst = async ({ word, lang }: FindDTO) => {
 
 export const fullTextSearch = async (s: string, lang: string) => {
   return db.query.words.findMany({
-    where: and(...[eq(words.lang, lang), like(words.word, `${s}%`)]),
+    where: and(eq(words.lang, lang), like(words.word, `${s}%`)),
     with: {
       translations: {
         with: {

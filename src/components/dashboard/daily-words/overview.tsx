@@ -9,6 +9,7 @@ import {
   Hourglass,
 } from "lucide-react";
 import { cloneElement, JSX } from "react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 interface EveryComponentProps {
   text: string;
@@ -65,7 +66,10 @@ export default function Overview({
       <div className="my-auto h-full justify-center items-center lg:p-4 bg-primary/10 rounded-3xl space-y-4">
         {/* Overview */}
         <div className="lg:p-6 bg-background rounded-3xl">
-          <p className="text-xl font-bold pb-4">Overview</p>
+          <div className="pb-4 flex items-center justify-between">
+            <p className="text-xl font-bold">Overview</p>
+            <SidebarTrigger className="md:hidden" />
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="p-4 bg-primary/10 rounded-3xl">
               <LearnedWordsChart chartData={chartData} />

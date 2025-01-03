@@ -26,7 +26,7 @@ export default function Overview({
           {Object.entries(overviewConf).map(([key, { icon, title }]) => (
             <div
               key={key}
-              className="flex items-center justify-between rounded-3xl bg-background p-2 md:p-4 lg:p-8"
+              className="flex items-center justify-between rounded-3xl bg-background p-4 lg:p-6"
             >
               <div className="flex items-center gap-2">
                 <icon.icon

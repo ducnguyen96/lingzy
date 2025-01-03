@@ -31,7 +31,7 @@ export default function EveryComponent(props: EveryComponentProps) {
           {cloneElement(badge)}
         </div>
       </div>
-      <div className="flex flex-1 bg-background rounded-3xl p-4 items-center justify-between">
+      <div className="flex flex-1 bg-background rounded-3xl p-4 lg:px-6 items-center justify-between">
         <div className="flex items-center gap-2 lg:gap-4">
           <span className="lg:text-lg">{text}</span>
           <div
@@ -44,7 +44,7 @@ export default function EveryComponent(props: EveryComponentProps) {
             <span>Word</span>
           </div>
         </div>
-        <ArrowRight />
+        <ArrowRight className="group-hover:translate-x-4 transition-transform duration-300" />
       </div>
     </Link>
   );

@@ -3,7 +3,6 @@ import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/app-sidebar";
-import Header from "@/components/layout/header";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/providers/theme-provider";
@@ -51,8 +50,7 @@ export default function RootLayout({
             <SidebarProvider defaultOpen={false}>
               <AppSidebar />
               <SidebarInset>
-                <Header />
-                <div className="flex-1 p-4 max-w-[100vw]">{children}</div>
+                {children}
                 <Toaster />
               </SidebarInset>
             </SidebarProvider>

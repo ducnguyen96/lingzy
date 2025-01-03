@@ -46,7 +46,7 @@ export function LearnedWordsChart({
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-28 w-full">
+        <ChartContainer config={chartConfig} className="h-36 w-full">
           <LineChart
             accessibilityLayer
             data={chartData}

@@ -3,7 +3,7 @@
 import { Sidebar, SidebarContent, useSidebar } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { BookA, Layers, List, SquareChartGantt } from "lucide-react";
+import { BookA, Layers, List, PanelsTopLeft } from "lucide-react";
 import NavNormal from "./nav-normal";
 import { learnFeatures } from "@/config/features";
 import NavNested, { NavNestedItem } from "./nav-nested";
@@ -25,7 +25,7 @@ const dashboard: NavNestedItem[] = [
       {
         title: "Overview",
         href: "/dashboard/daily-words/overview",
-        Icon: SquareChartGantt,
+        Icon: PanelsTopLeft,
       },
       {
         title: "Listing",
@@ -60,7 +60,11 @@ export function AppSidebar() {
       {display && (
         <Sidebar collapsible="icon">
           <SidebarContent className="bg-background">
-            <NavNested pathname={pathname} items={dashboard} label="Overview" />
+            <NavNested
+              pathname={pathname}
+              items={dashboard}
+              label="Dashboard"
+            />
             <NavNormal
               pathname={pathname}
               items={applications}

@@ -10,8 +10,10 @@ import {
 } from "lucide-react";
 import { cloneElement, JSX } from "react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import Link from "next/link";
 
 interface EveryComponentProps {
+  href: string;
   text: string;
   value: number;
   badge: JSX.Element;
@@ -19,10 +21,14 @@ interface EveryComponentProps {
 }
 
 function EveryComponent(props: EveryComponentProps) {
-  const { text, value, badge, color } = props;
+  const { text, value, badge, color, href } = props;
 
   return (
-    <div className="flex items-center gap-4">
+    <Link
+      prefetch={false}
+      className="flex items-center gap-4 group"
+      href={href}
+    >
       <div className="relative">
         <CalendarSync size={40} className={`text-${color}`} strokeWidth={1} />
         <div
@@ -34,7 +40,7 @@ function EveryComponent(props: EveryComponentProps) {
           {cloneElement(badge)}
         </div>
       </div>
-      <div className="flex flex-1 bg-background rounded-3xl p-4 items-center justify-between cursor-pointer">
+      <div className="flex flex-1 bg-background rounded-3xl p-4 items-center justify-between">
         <div className="flex items-center gap-2 lg:gap-4">
           <span className="lg:text-lg">{text}</span>
           <div
@@ -49,7 +55,7 @@ function EveryComponent(props: EveryComponentProps) {
         </div>
         <ArrowRight />
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -58,14 +64,15 @@ export default function Overview({
 }: {
   overview: DailyWordsOverview;
 }) {
+  const listUrl = "/dashboard/daily-words/list";
   const chartData = Object.entries(overview.progress.details).map(
     ([key, value]) => ({ date: key, value }),
   );
   return (
     <>
-      <div className="my-auto h-full justify-center items-center lg:p-4 bg-primary/10 rounded-3xl space-y-4">
+      <div className="h-full justify-center items-center lg:p-4 space-y-4">
         {/* Overview */}
-        <div className="lg:p-6 bg-background rounded-3xl">
+        <div className="lg:p-6 lg:bg-primary/5  rounded-3xl">
           <div className="pb-4 flex items-center justify-between">
             <p className="text-xl font-bold">Overview</p>
             <SidebarTrigger className="md:hidden" />
@@ -100,6 +107,7 @@ export default function Overview({
         {/* Every */}
         <div className="p-6 gap-6 bg-primary/5 grid grid-cols-1 lg:grid-cols-2 rounded-3xl">
           <EveryComponent
+            href={`${listUrl}/everyday`}
             badge={<Hourglass size={14} />}
             color="orange-400"
             text="Waiting"
@@ -107,7 +115,7 @@ export default function Overview({
           />
           {Object.entries(everyComp).map(([key, { title }], idx) => (
             <EveryComponent
-              key={key}
+              href={`${listUrl}/${key}`}
               badge={<span>{idx + 1}</span>}
               color="purple-400"
               text={title}
@@ -116,6 +124,7 @@ export default function Overview({
             />
           ))}
           <EveryComponent
+            href={`${listUrl}/learned`}
             badge={<GraduationCap size={14} />}
             color="green-400"
             text="Learned"

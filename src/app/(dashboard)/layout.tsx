@@ -5,7 +5,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <div className="flex-1 p-4 max-w-[100vw]">{children}</div>
+      <div className="p-4 lg:p-0 h-full">{children}</div>
     </>
   );
 }

@@ -59,7 +59,12 @@ export default function NoResult() {
               </Button>
             </form>
           </div>
-          {isPending && <Progress value={progress} className="w-[60%]" />}
+          {isPending && (
+            <Progress
+              value={progress}
+              className="w-[60%] [&>div]:duration-1000"
+            />
+          )}
         </div>
       </div>
     </div>

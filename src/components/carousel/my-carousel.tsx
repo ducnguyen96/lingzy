@@ -44,7 +44,10 @@ export default function MyCarousel({
             <span className="text-lg">Flashcard</span>
           </div>
           <div className="flex items-center gap-4 flex-1">
-            <Progress value={Math.round((index / len) * 100)} />
+            <Progress
+              value={Math.round((index / len) * 100)}
+              className="[&>div]:duration-1000"
+            />
             <span className="text-primary">
               {index}/{len}
             </span>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/layout/app-sidebar";
 import Header from "@/components/layout/header";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { cn } from "@/lib/utils";

@@ -9,7 +9,7 @@ type FeatureCardProps = {
 
 export function FeatureCard(props: FeatureCardProps) {
   const { className, feature } = props;
-  const { title, description, color, href, icon } = feature;
+  const { title, description, color, href, Icon } = feature;
   return (
     <Link
       href={href}
@@ -24,7 +24,7 @@ export function FeatureCard(props: FeatureCardProps) {
         <p className="text-xs font-light">{description}</p>
       </div>
       <div className="flex justify-center">
-        <icon.icon
+        <Icon
           strokeWidth={1}
           size={50}
           className={cn("animate-wiggle w-10 md:w-60", color.icon)}

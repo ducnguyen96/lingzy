@@ -25,7 +25,7 @@ import { DailyWordBadge } from "./word-count-badge";
 const menuItems = [
   {
     title: "daily words",
-    href: "/dashboard/overview",
+    href: "/dashboard/daily-words/overview",
     icon: { icon: CalendarSync },
   },
   {

@@ -4,7 +4,6 @@ import { everyComp, overviewConf } from "@/config/overview";
 import { cn } from "@/lib/utils";
 import { ArrowRight, GraduationCap, Hourglass, Layers } from "lucide-react";
 import { cloneElement, JSX } from "react";
-import WithOpenSidebar from "../with-open-sidebar";
 
 interface EveryComponentProps {
   text: string;
@@ -57,11 +56,11 @@ export default function Overview({
     ([key, value]) => ({ date: key, value }),
   );
   return (
-    <WithOpenSidebar>
-      <div className="my-auto h-full justify-center items-center lg:p-4 lg:bg-primary/10 space-y-4">
+    <>
+      <div className="my-auto h-full justify-center items-center lg:p-4 bg-primary/10 rounded-3xl space-y-4">
         {/* Overview */}
-        <div className="lg:p-6 bg-background rounded-t-3xl">
-          <p className="text-xl font-bold py-4">Overview</p>
+        <div className="lg:p-6 bg-background rounded-3xl">
+          <p className="text-xl font-bold pb-4">Overview</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="p-4 bg-primary/10 rounded-3xl">
               <LearnedWordsChart chartData={chartData} />
@@ -90,7 +89,7 @@ export default function Overview({
           </div>
         </div>
         {/* Every */}
-        <div className="p-6 gap-6 bg-primary/20 grid grid-cols-1 lg:grid-cols-2 rounded-b-3xl">
+        <div className="p-6 gap-6 bg-primary/5 grid grid-cols-1 lg:grid-cols-2 rounded-3xl">
           <EveryComponent
             badge={<Hourglass size={14} />}
             color="orange-400"
@@ -115,6 +114,6 @@ export default function Overview({
           />
         </div>
       </div>
-    </WithOpenSidebar>
+    </>
   );
 }

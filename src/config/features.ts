@@ -18,9 +18,7 @@ export type LearnFeature = {
   description: string;
   color: CardColorClasses;
   href: string;
-  icon: {
-    icon: LucideIcon;
-  };
+  Icon: LucideIcon;
 };
 
 const cardColors = (color: string): CardColorClasses => {
@@ -37,35 +35,35 @@ export const learnFeatures: LearnFeature[] = [
     color: cardColors("violet"),
     href: "/learn/vocabulary",
     description: "Learn New Words",
-    icon: { icon: Newspaper },
+    Icon: Newspaper,
   },
   {
     title: "Grammar",
     color: cardColors("emerald"),
     href: "/learn/grammar",
     description: "How to make sentences",
-    icon: { icon: BookOpenText },
+    Icon: BookOpenText,
   },
   {
     title: "Expressions",
     color: cardColors("indigo"),
     href: "/learn/expressions",
     description: "Idioms and Proverbs",
-    icon: { icon: Lightbulb },
+    Icon: Lightbulb,
   },
   {
     title: "Pronunciation",
     color: cardColors("yellow"),
     href: "/learn/pronunciation",
     description: "How to read letters",
-    icon: { icon: Speech },
+    Icon: Speech,
   },
   {
     title: "Reading",
     color: cardColors("red"),
     href: "/learn/reading",
     description: "Use your knowledge",
-    icon: { icon: BookCopy },
+    Icon: BookCopy,
   },
 ];
 

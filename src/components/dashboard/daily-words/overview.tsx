@@ -2,7 +2,12 @@ import { DailyWordsOverview } from "@/lib/server/services/daily-word";
 import { LearnedWordsChart } from "@/components/charts/learned-words-chart";
 import { everyComp, overviewConf } from "@/config/overview";
 import { cn } from "@/lib/utils";
-import { ArrowRight, GraduationCap, Hourglass, Layers } from "lucide-react";
+import {
+  ArrowRight,
+  CalendarSync,
+  GraduationCap,
+  Hourglass,
+} from "lucide-react";
 import { cloneElement, JSX } from "react";
 
 interface EveryComponentProps {
@@ -18,10 +23,10 @@ function EveryComponent(props: EveryComponentProps) {
   return (
     <div className="flex items-center gap-4">
       <div className="relative">
-        <Layers size={40} className={`text-${color}`} strokeWidth={1} />
+        <CalendarSync size={40} className={`text-${color}`} strokeWidth={1} />
         <div
           className={cn(
-            "absolute flex items-center justify-center w-5 h-5 text-sm font-semibold rounded-full bottom-0 -right-1",
+            "absolute flex items-center justify-center w-5 h-5 text-sm font-semibold rounded-full -top-1 -right-2",
             `bg-${color}`,
           )}
         >

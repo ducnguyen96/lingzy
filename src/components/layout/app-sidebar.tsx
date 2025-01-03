@@ -3,7 +3,13 @@
 import { Sidebar, SidebarContent, useSidebar } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { BookA, CalendarSync, List, PanelsTopLeft } from "lucide-react";
+import {
+  BookA,
+  BrainCircuit,
+  CalendarSync,
+  List,
+  PanelsTopLeft,
+} from "lucide-react";
 import NavNormal from "./nav-normal";
 import { learnFeatures } from "@/config/features";
 import NavNested, { NavNestedItem } from "./nav-nested";
@@ -31,6 +37,11 @@ const dashboard: NavNestedItem[] = [
         title: "Listing",
         href: "/dashboard/daily-words/list",
         Icon: List,
+      },
+      {
+        title: "Learn",
+        href: "/flashcard/daily-words",
+        Icon: BrainCircuit,
       },
     ],
   },

@@ -37,7 +37,7 @@ export default function MyCarousel({
 
   return (
     <>
-      <div className="absolute top-0 left-0 w-full h-20 lg:h-36 z-10 bg-background border p-4 md:py-6 md:px-12 lg:px-28 xl:px-52 2xl:px-80">
+      <div className="z-10 bg-background border p-4 md:py-6 md:px-12 lg:px-28 xl:px-52 2xl:px-80">
         <div className="flex items-center gap-6 font-semibold">
           <div className="flex items-center gap-4">
             <GraduationCap className="text-primary" size={32} />

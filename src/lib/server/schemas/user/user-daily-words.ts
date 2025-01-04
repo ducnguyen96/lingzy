@@ -22,9 +22,11 @@ export const userDailyWords = pgTable("user_daily_words", {
   repetition: smallint("repetition").notNull(),
   ef: real().notNull(),
   nextReview: timestamp("next_review", { withTimezone: true }).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at"),
-  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }),
+  completedAt: timestamp("completed_at", { withTimezone: true }),
 });
 
 export const userDailyWordsRelations = relations(userDailyWords, ({ one }) => ({

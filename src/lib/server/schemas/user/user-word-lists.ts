@@ -14,8 +14,10 @@ export const userWordLists = pgTable("user_word_lists", {
     .array()
     .notNull()
     .default(sql`'{}'::integer[]`),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }),
   userId: text("user_id").notNull(),
 });
 

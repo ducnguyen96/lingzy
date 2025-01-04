@@ -67,9 +67,9 @@ CREATE TABLE "user_daily_words" (
 	"repetition" smallint NOT NULL,
 	"ef" real NOT NULL,
 	"next_review" timestamp with time zone NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp,
-	"completed_at" timestamp
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone,
+	"completed_at" timestamp with time zone
 );
 --> statement-breakpoint
 CREATE TABLE "user_settings" (
@@ -85,7 +85,7 @@ CREATE TABLE "word_list_scores" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"spelling" text NOT NULL,
 	"definition" text NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"word_list_id" text NOT NULL
 );
 --> statement-breakpoint
@@ -95,8 +95,8 @@ CREATE TABLE "user_word_lists" (
 	"state" text DEFAULT 'pending' NOT NULL,
 	"description" text,
 	"translation_ids" integer[] DEFAULT '{}'::integer[] NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone,
 	"user_id" text NOT NULL
 );
 --> statement-breakpoint
@@ -104,7 +104,6 @@ CREATE TABLE "users" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"email" text NOT NULL,
-	"email_verified" timestamp,
 	"image" text NOT NULL,
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );

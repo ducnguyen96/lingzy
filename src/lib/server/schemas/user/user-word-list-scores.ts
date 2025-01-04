@@ -6,7 +6,9 @@ export const wordListScores = pgTable("word_list_scores", {
   id: serial("id").primaryKey(),
   spelling: text("spelling").notNull(),
   definition: text("definition").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
   wordListId: text("word_list_id").notNull(),
 });
 

@@ -3,14 +3,22 @@ import db from "../db";
 import { DBUser } from "./user";
 import { translations, UpdateDailyWordDTO, userDailyWords } from "../schemas";
 import { TZDate } from "@date-fns/tz";
-import { add, endOfDay, format, isBefore, startOfDay, sub } from "date-fns";
+import {
+  add,
+  endOfDay,
+  format,
+  isAfter,
+  isBefore,
+  startOfDay,
+  sub,
+} from "date-fns";
 
 export type TodayWordEntity = Awaited<ReturnType<typeof queryTodayWords>>[0];
 export type DailyWordsOverview = {
   waiting: number;
   learning: number;
   learned: number;
-  sevDays: { day: string; value: number }[];
+  sevDays: { day: string; learned: number; new: number }[];
   every1: number;
   every2: number;
   every4: number;
@@ -80,16 +88,11 @@ export const queryDailyWordsOverview = async (user: DBUser) => {
     const date = sub(now, { days: i });
     const dayName = format(date, "EEE");
     nameToIndex[dayName] = 6 - i;
-    overview.sevDays.push({ day: dayName, value: 0 });
+    overview.sevDays.push({ day: dayName, learned: 0, new: 0 });
   }
 
   for (let i = 0; i < found.length; i++) {
     const word = found[i];
-    if (!word.updatedAt) {
-      overview.waiting += 1;
-      continue;
-    }
-
     if (word.completedAt) {
       overview.learned += 1;
 
@@ -97,7 +100,18 @@ export const queryDailyWordsOverview = async (user: DBUser) => {
       if (isBefore(completedAt, sixDaysAgo)) continue;
 
       const dayIndx = nameToIndex[format(completedAt, "EEE")];
-      overview.sevDays[dayIndx].value += 1;
+      overview.sevDays[dayIndx].learned += 1;
+      continue;
+    }
+
+    const createdAt = new TZDate(word.createdAt);
+    if (isAfter(createdAt, sixDaysAgo)) {
+      const dayIndx = nameToIndex[format(createdAt, "EEE")];
+      overview.sevDays[dayIndx].new += 1;
+    }
+
+    if (!word.updatedAt) {
+      overview.waiting += 1;
       continue;
     }
 

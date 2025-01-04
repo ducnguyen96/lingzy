@@ -13,28 +13,36 @@ import {
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { ReactNode } from "react";
+import { overviewConf } from "@/config/overview";
 
 interface LearnedWordsChartProps {
   description?: string;
   footer?: ReactNode;
   chartData: {
     day: string;
-    value: number;
+    learned: number;
+    new: number;
   }[];
 }
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
+  learned: {
+    label: "Learned",
+    color: overviewConf.learned.icon.hex,
+  },
+  new: {
+    label: "New",
+    color: overviewConf.learning.icon.hex,
   },
 } satisfies ChartConfig;
 
-export function LearnedWordsChart({
+export function SevDaysProgressChart({
   description,
   footer,
   chartData,
@@ -42,7 +50,7 @@ export function LearnedWordsChart({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Daily Learned Words Chart</CardTitle>
+        <CardTitle>Seven Days Progress Chart</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent>
@@ -58,20 +66,28 @@ export function LearnedWordsChart({
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="day"
-              tickLine={false}
-              axisLine={false}
+              tickLine={true}
+              axisLine={true}
               tickMargin={8}
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
+            <ChartLegend content={<ChartLegendContent />} />
             <Line
-              dataKey="value"
+              dataKey="learned"
               type="natural"
-              stroke="var(--color-desktop)"
+              stroke="var(--color-learned)"
               strokeWidth={2}
-              dot={false}
+              dot={true}
+            />
+            <Line
+              dataKey="new"
+              type="natural"
+              stroke="var(--color-new)"
+              strokeWidth={2}
+              dot={true}
             />
           </LineChart>
         </ChartContainer>

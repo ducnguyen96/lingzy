@@ -9,26 +9,26 @@ import {
 type OverviewConf = Record<
   "day" | "waiting" | "learning" | "learned",
   {
-    icon: { icon: LucideIcon; color: string };
+    icon: { icon: LucideIcon; color: string; hex: string };
     title: string;
   }
 >;
 
 export const overviewConf: OverviewConf = {
   day: {
-    icon: { icon: CalendarDays, color: "text-blue-400" },
+    icon: { icon: CalendarDays, color: "text-blue-400", hex: "#60a5fa" },
     title: "Day",
   },
   waiting: {
-    icon: { icon: Hourglass, color: "text-orange-400" },
+    icon: { icon: Hourglass, color: "text-orange-400", hex: "#fb923c" },
     title: "Waiting",
   },
   learning: {
-    icon: { icon: BrainCircuit, color: "text-purple-400" },
+    icon: { icon: BrainCircuit, color: "text-purple-400", hex: "#c084fc" },
     title: "Learning",
   },
   learned: {
-    icon: { icon: GraduationCap, color: "text-green-400" },
+    icon: { icon: GraduationCap, color: "text-green-400", hex: "#4ade80" },
     title: "Learned",
   },
 };

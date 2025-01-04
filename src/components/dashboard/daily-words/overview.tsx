@@ -1,4 +1,4 @@
-import { LearnedWordsChart } from "@/components/charts/learned-words-chart";
+import { SevDaysProgressChart } from "@/components/charts/sev-days-progress-chart";
 import { overviewConf } from "@/config/overview";
 import { cn } from "@/lib/utils";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -21,7 +21,7 @@ export default function Overview({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="p-4 bg-primary/10 rounded-3xl">
-          <LearnedWordsChart chartData={overview.sevDays} />
+          <SevDaysProgressChart chartData={overview.sevDays} />
         </div>
         <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4 bg-primary/10 rounded-3xl">
           {Object.entries(overviewConf).map(([key, { icon, title }]) => (

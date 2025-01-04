@@ -46,7 +46,7 @@ const menuItems = [
 ];
 
 export default function UserButton() {
-  const { status, data } = useSession();
+  const { status, data, update } = useSession();
 
   switch (status) {
     case "loading":
@@ -60,6 +60,17 @@ export default function UserButton() {
       const user = data.user!;
       const userImg = user.image!;
       const userImgAlt = `${user.name}-logo`;
+      const userTz = user.setting.currentTimezone;
+      const currentTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (userTz !== currentTz) {
+        fetch("/api/user/settings", {
+          method: "PATCH",
+          body: JSON.stringify({
+            currentTimezone: currentTz,
+          }),
+        }).then(update);
+      }
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

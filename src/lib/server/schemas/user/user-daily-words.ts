@@ -1,6 +1,5 @@
 import { relations } from "drizzle-orm";
 import {
-  date,
   integer,
   pgTable,
   real,
@@ -11,6 +10,8 @@ import {
 } from "drizzle-orm/pg-core";
 import { users } from "./users";
 import { translations } from "../dictionary/translations";
+import { createUpdateSchema } from "drizzle-zod";
+import { z } from "zod";
 
 export const userDailyWords = pgTable("user_daily_words", {
   id: serial("id").primaryKey(),
@@ -20,7 +21,7 @@ export const userDailyWords = pgTable("user_daily_words", {
   interval: smallint("interval").notNull(),
   repetition: smallint("repetition").notNull(),
   ef: real().notNull(),
-  nextReview: date("next_review").notNull(),
+  nextReview: timestamp("next_review", { withTimezone: true }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at"),
   completedAt: timestamp("completed_at"),
@@ -36,3 +37,6 @@ export const userDailyWordsRelations = relations(userDailyWords, ({ one }) => ({
     references: [translations.id],
   }),
 }));
+
+const updateDailyWordSchema = createUpdateSchema(userDailyWords);
+export type UpdateDailyWordDTO = z.infer<typeof updateDailyWordSchema>;

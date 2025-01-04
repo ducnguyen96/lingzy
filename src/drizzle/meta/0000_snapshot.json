@@ -1,5 +1,5 @@
 {
-  "id": "6cc5e891-9da7-4105-931d-f96772488c61",
+  "id": "3ef1509c-c1fb-45a3-a18f-56ab94676504",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -405,7 +405,7 @@
         },
         "next_review": {
           "name": "next_review",
-          "type": "date",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true
         },
@@ -467,6 +467,13 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'en'"
+        },
+        "current_timezone": {
+          "name": "current_timezone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Asia/Ho_Chi_Minh'"
         },
         "user_id": {
           "name": "user_id",

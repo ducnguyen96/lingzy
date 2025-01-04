@@ -35,7 +35,6 @@ export default function MyCarousel({
     if (emblaApi) emblaApi.scrollNext();
     if (emblaApi1) emblaApi1.scrollNext();
     setIndex(index + 1);
-    toggleLoading();
   };
 
   return (

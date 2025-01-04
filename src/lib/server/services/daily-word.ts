@@ -1,7 +1,9 @@
-import { and, DrizzleError, eq, lte } from "drizzle-orm";
+import { and, DrizzleError, eq, gte, isNull, lt } from "drizzle-orm";
 import db from "../db";
 import { DBUser } from "./user";
-import { translations, userDailyWords } from "../schemas";
+import { translations, UpdateDailyWordDTO, userDailyWords } from "../schemas";
+import { TZDate } from "@date-fns/tz";
+import { add, endOfDay, startOfDay } from "date-fns";
 
 export type TodayWordEntity = Awaited<ReturnType<typeof queryTodayWords>>[0];
 export type DailyWordsOverview = {
@@ -24,6 +26,7 @@ export const insertToDailyWords = async (
   user: DBUser,
   translationId: number,
 ) => {
+  const now = new TZDate(new Date(), user.setting.currentTimezone);
   await db.transaction(async (tx) => {
     const found = await tx.query.userDailyWords.findFirst({
       where: and(
@@ -46,7 +49,7 @@ export const insertToDailyWords = async (
       interval: 1,
       repetition: 0,
       ef: 2.5,
-      nextReview: new Date().toISOString(),
+      nextReview: startOfDay(now),
     });
   });
 };
@@ -117,11 +120,14 @@ export const queryDailyWordsOverview = async (user: DBUser) => {
   return overview;
 };
 
-export const queryTodayWords = async (user: DBUser) => {
+export const queryTodayWords = async (user: DBUser, tz: string) => {
+  const now = new TZDate(new Date(), tz);
   return db.query.userDailyWords.findMany({
     where: and(
       eq(userDailyWords.userId, user.id),
-      lte(userDailyWords.nextReview, new Date().toISOString()),
+      lt(userDailyWords.nextReview, endOfDay(now)),
+      gte(userDailyWords.nextReview, startOfDay(now)),
+      isNull(userDailyWords.completedAt),
     ),
     with: {
       word: {
@@ -134,5 +140,43 @@ export const queryTodayWords = async (user: DBUser) => {
         },
       },
     },
+    limit: 10,
+  });
+};
+
+export const patchTodayWords = async (
+  user: DBUser,
+  id: number,
+  rating: 1 | 3 | 5,
+) => {
+  const now = new TZDate(new Date(), user.setting.currentTimezone);
+  await db.transaction(async (tx) => {
+    const found = await tx.query.userDailyWords.findFirst({
+      where: and(eq(userDailyWords.id, id), eq(userDailyWords.userId, user.id)),
+    });
+    if (!found) throw new DrizzleError({ message: "not found" });
+
+    const dto: UpdateDailyWordDTO = {};
+
+    if (rating === 1) {
+      dto.interval = 1;
+      dto.ef = Math.max(1.3, found.ef - 0.2);
+      dto.repetition = 0;
+    } else if (rating === 3) {
+      dto.ef = Math.max(1.3, found.ef - 0.1);
+      dto.interval = Math.round(found.interval * dto.ef);
+      dto.repetition = found.repetition + 1;
+    } else {
+      dto.ef = found.ef + 0.1;
+      dto.interval = Math.round(found.interval * dto.ef);
+      dto.repetition = found.repetition + 1;
+    }
+    dto.nextReview = startOfDay(add(now, { days: dto.interval }));
+
+    if (dto.repetition >= 3 && dto.interval >= 30 && dto.ef >= 3.0) {
+      dto.completedAt = now;
+    }
+
+    await tx.update(userDailyWords).set(dto);
   });
 };

@@ -27,7 +27,7 @@ export const subTranslationRelations = relations(
   }),
 );
 
-export const insertSubTranslationSchema = createInsertSchema(subTranslations);
+const insertSubTranslationSchema = createInsertSchema(subTranslations);
 export type InsertSubTranslationDTO = z.infer<
   typeof insertSubTranslationSchema
 > & {

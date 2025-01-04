@@ -66,7 +66,7 @@ CREATE TABLE "user_daily_words" (
 	"interval" smallint NOT NULL,
 	"repetition" smallint NOT NULL,
 	"ef" real NOT NULL,
-	"next_review" date NOT NULL,
+	"next_review" timestamp with time zone NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp,
 	"completed_at" timestamp
@@ -77,6 +77,7 @@ CREATE TABLE "user_settings" (
 	"theme" text DEFAULT 'system' NOT NULL,
 	"learning_lang" text DEFAULT 'en' NOT NULL,
 	"native_language" text DEFAULT 'en' NOT NULL,
+	"current_timezone" text DEFAULT 'Asia/Ho_Chi_Minh' NOT NULL,
 	"user_id" text NOT NULL
 );
 --> statement-breakpoint

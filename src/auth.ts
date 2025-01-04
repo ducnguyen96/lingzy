@@ -4,7 +4,7 @@ import db from "./lib/server/db";
 import authConfig from "./auth.config";
 import { users } from "./lib/server/schemas";
 import { userAccounts } from "./lib/server/schemas/user/user-accounts";
-import { loginUser } from "./lib/server/services/user";
+import { getUserByEmail, loginUser } from "./lib/server/services/user";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: DrizzleAdapter(db, {
@@ -13,7 +13,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   }),
   session: { strategy: "jwt" },
   callbacks: {
-    jwt: async ({ user, token }) => {
+    jwt: async ({ user, token, trigger }) => {
+      if (trigger === "update") {
+        const dbUser = await getUserByEmail(token.email!);
+        if (!dbUser) return token;
+        return dbUser;
+      }
       if (!user) return token;
 
       const dbUser = await loginUser(user.id!);

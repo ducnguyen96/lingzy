@@ -1,6 +1,11 @@
 import { eq } from "drizzle-orm";
 import db from "../db";
-import { InsertUserDTO, users, userSettings } from "../schemas";
+import {
+  InsertUserDTO,
+  UpdateUserSettingDTO,
+  users,
+  userSettings,
+} from "../schemas";
 
 type User = NonNullable<Awaited<ReturnType<typeof getUserById>>>;
 export type DBUser = Omit<User, "setting"> & {
@@ -16,7 +21,18 @@ export const getUserById = async (id: string) => {
   });
 };
 
+export const getUserByEmail = async (email: string) => {
+  return db.query.users.findFirst({
+    where: eq(users.email, email),
+    with: {
+      setting: true,
+    },
+  });
+};
+
 export const loginUser = async (userId: string) => {
+  const found = await getUserById(userId);
+  if (found?.setting) return found;
   await db.insert(userSettings).values({ userId });
   return getUserById(userId);
 };
@@ -29,4 +45,14 @@ export const registerUser = async (dto: InsertUserDTO) => {
       .returning({ userId: users.id });
     await tx.insert(userSettings).values({ userId: userIds[0].userId });
   });
+};
+
+export const updateUserSetting = async (
+  user: DBUser,
+  dto: UpdateUserSettingDTO,
+) => {
+  await db
+    .update(userSettings)
+    .set(dto)
+    .where(eq(userSettings.userId, user.id));
 };

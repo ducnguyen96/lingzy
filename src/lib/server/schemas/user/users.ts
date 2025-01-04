@@ -24,6 +24,6 @@ export const usersRelations = relations(users, ({ many, one }) => ({
   wordLists: many(userWordLists),
 }));
 
-export const insertUserSchema = createInsertSchema(users);
+const insertUserSchema = createInsertSchema(users);
 
 export type InsertUserDTO = z.infer<typeof insertUserSchema>;

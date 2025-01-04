@@ -22,7 +22,7 @@ interface LearnedWordsChartProps {
   description?: string;
   footer?: ReactNode;
   chartData: {
-    date: string;
+    day: string;
     value: number;
   }[];
 }
@@ -42,7 +42,7 @@ export function LearnedWordsChart({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Learned Words Chart</CardTitle>
+        <CardTitle>Daily Learned Words Chart</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent>
@@ -57,11 +57,10 @@ export function LearnedWordsChart({
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="date"
+              dataKey="day"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
             />
             <ChartTooltip
               cursor={false}

@@ -3,17 +3,14 @@ import db from "../db";
 import { DBUser } from "./user";
 import { translations, UpdateDailyWordDTO, userDailyWords } from "../schemas";
 import { TZDate } from "@date-fns/tz";
-import { add, endOfDay, startOfDay } from "date-fns";
+import { add, endOfDay, format, isBefore, startOfDay, sub } from "date-fns";
 
 export type TodayWordEntity = Awaited<ReturnType<typeof queryTodayWords>>[0];
 export type DailyWordsOverview = {
   waiting: number;
   learning: number;
   learned: number;
-  progress: {
-    total: number;
-    details: Record<string, number>;
-  };
+  sevDays: { day: string; value: number }[];
   every1: number;
   every2: number;
   every4: number;
@@ -67,10 +64,7 @@ export const queryDailyWordsOverview = async (user: DBUser) => {
     waiting: 0,
     learning: 0,
     learned: 0,
-    progress: {
-      total: 0,
-      details: {},
-    },
+    sevDays: [],
     every1: 0,
     every2: 0,
     every4: 0,
@@ -79,6 +73,15 @@ export const queryDailyWordsOverview = async (user: DBUser) => {
     every32: 0,
     others: 0,
   };
+  const now = new TZDate(new Date(), user.setting.currentTimezone);
+  const sixDaysAgo = startOfDay(sub(now, { days: 6 }));
+  const nameToIndex: Record<string, number> = {};
+  for (let i = 6; i >= 0; i--) {
+    const date = sub(now, { days: i });
+    const dayName = format(date, "EEE");
+    nameToIndex[dayName] = 6 - i;
+    overview.sevDays.push({ day: dayName, value: 0 });
+  }
 
   for (let i = 0; i < found.length; i++) {
     const word = found[i];
@@ -89,12 +92,12 @@ export const queryDailyWordsOverview = async (user: DBUser) => {
 
     if (word.completedAt) {
       overview.learned += 1;
-      const date = word.completedAt.toISOString().slice(0, 10);
-      if (overview.progress.details[date]) {
-        overview.progress.details[date] += 1;
-        continue;
-      }
-      overview.progress.details[date] = 1;
+
+      const completedAt = new TZDate(word.completedAt);
+      if (isBefore(completedAt, sixDaysAgo)) continue;
+
+      const dayIndx = nameToIndex[format(completedAt, "EEE")];
+      overview.sevDays[dayIndx].value += 1;
       continue;
     }
 

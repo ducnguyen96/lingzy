@@ -1,5 +1,5 @@
 export enum ReviewQuality {
   bad = 1,
-  normal = 2,
-  good = 3,
+  normal = 3,
+  good = 5,
 }

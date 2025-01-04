@@ -20,6 +20,7 @@ export type DailyWordsOverview = {
   every8: number;
   every16: number;
   every32: number;
+  others: number;
 };
 
 export const insertToDailyWords = async (
@@ -76,6 +77,7 @@ export const queryDailyWordsOverview = async (user: DBUser) => {
     every8: 0,
     every16: 0,
     every32: 0,
+    others: 0,
   };
 
   for (let i = 0; i < found.length; i++) {
@@ -93,8 +95,10 @@ export const queryDailyWordsOverview = async (user: DBUser) => {
         continue;
       }
       overview.progress.details[date] = 1;
+      continue;
     }
 
+    overview.learning += 1;
     switch (word.interval) {
       case 1:
         overview.every1 += 1;
@@ -114,14 +118,16 @@ export const queryDailyWordsOverview = async (user: DBUser) => {
       case 32:
         overview.every32 += 1;
         break;
+      default:
+        overview.others += 1;
     }
   }
 
   return overview;
 };
 
-export const queryTodayWords = async (user: DBUser, tz: string) => {
-  const now = new TZDate(new Date(), tz);
+export const queryTodayWords = async (user: DBUser) => {
+  const now = new TZDate(new Date(), user.setting.currentTimezone);
   return db.query.userDailyWords.findMany({
     where: and(
       eq(userDailyWords.userId, user.id),
@@ -144,7 +150,7 @@ export const queryTodayWords = async (user: DBUser, tz: string) => {
   });
 };
 
-export const patchTodayWords = async (
+export const patchTodayWord = async (
   user: DBUser,
   id: number,
   rating: 1 | 3 | 5,
@@ -172,11 +178,12 @@ export const patchTodayWords = async (
       dto.repetition = found.repetition + 1;
     }
     dto.nextReview = startOfDay(add(now, { days: dto.interval }));
+    dto.updatedAt = now;
 
     if (dto.repetition >= 3 && dto.interval >= 30 && dto.ef >= 3.0) {
       dto.completedAt = now;
     }
 
-    await tx.update(userDailyWords).set(dto);
+    await tx.update(userDailyWords).set(dto).where(eq(userDailyWords.id, id));
   });
 };

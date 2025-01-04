@@ -52,4 +52,7 @@ export const everyComp = {
   every32: {
     title: "Every 32 days",
   },
+  others: {
+    title: "Others",
+  },
 };

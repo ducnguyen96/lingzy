@@ -11,14 +11,17 @@ import { Button } from "../ui/button";
 import { EmblaOptionsType } from "embla-carousel";
 import { cn } from "@/lib/utils";
 import { useGlobalLoading } from "../providers/global-loading-provider";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function MyCarousel({
   todayWords,
 }: {
   todayWords: TodayWordEntity[];
 }) {
+  const router = useRouter();
   const [index, setIndex] = useState(0);
-  const { toggleLoading } = useGlobalLoading();
+  const { loading, setLoading } = useGlobalLoading();
   const len = todayWords.length;
 
   const opts: EmblaOptionsType = {
@@ -31,11 +34,24 @@ export default function MyCarousel({
   const [emblaRef, emblaApi] = useEmblaCarousel(opts);
   const [emblaRef1, emblaApi1] = useEmblaCarousel({ ...opts, align: "start" });
 
-  const review = (quality: ReviewQuality) => {
+  const review = (id: number, rating: ReviewQuality) => {
     if (emblaApi) emblaApi.scrollNext();
     if (emblaApi1) emblaApi1.scrollNext();
     setIndex(index + 1);
+    setLoading(true);
+    fetch("/api/user/daily-words", {
+      method: "PATCH",
+      body: JSON.stringify({ id, rating }),
+    })
+      .then(() => setLoading(false))
+      .then(() => {
+        if (index === len - 1) {
+          router.push("/dashboard/daily-words/overview");
+        }
+      });
   };
+
+  const disableCancel = index === len && loading;
 
   return (
     <>
@@ -54,8 +70,15 @@ export default function MyCarousel({
               {index}/{len}
             </span>
           </div>
-          <Button variant="ghost" size="icon" className="[&_svg]:size-5">
-            <X />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="[&_svg]:size-5"
+            disabled={disableCancel}
+          >
+            <Link href="/dashboard/daily-words/overview">
+              <X />
+            </Link>
           </Button>
         </div>
         <EmblaCarousel

@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import {
   Frown,
@@ -17,38 +17,19 @@ import { countryEmoji } from "../audio-button";
 import { ReviewQuality } from "@/enums/review";
 import { TodayWordEntity } from "@/lib/server/services/daily-word";
 import "./flashcard.css";
-
-interface ReviewButtonProps {
-  className?: string;
-  icon: ReactNode;
-  text: string;
-  action: () => void;
-}
+import ReviewButton from "./review-button";
 
 interface FlashCardProps {
   className?: string;
   focused: boolean;
-  review: (quality: ReviewQuality) => void;
+  review: (id: number, rating: ReviewQuality) => void;
   entity: TodayWordEntity;
-}
-
-function ReviewButton(props: ReviewButtonProps) {
-  const { icon, text, action, className } = props;
-  return (
-    <div
-      className={cn("flex flex-col flex-1 text-center p-2", className)}
-      onClick={action}
-    >
-      <div className="flex justify-center">{icon}</div>
-      <span>{text}</span>
-    </div>
-  );
 }
 
 export default function FlashCard(props: FlashCardProps) {
   const { className, review, focused, entity } = props;
   const [flipped, setFlipped] = useState(false);
-  const { word: translation } = entity;
+  const { word: translation, id } = entity;
   const { word } = translation;
   const pronun = word.pronunciations.find((p) => p.country === "us");
 
@@ -95,7 +76,7 @@ export default function FlashCard(props: FlashCardProps) {
                   <SwatchBookIcon className="text-muted-foreground" size={20} />
                   <span className="font-semibold text-sm">Example</span>
                 </div>
-                <ul className="space-y-2 max-h-24 overflow-scroll text-muted-foreground text-start list-disc list-inside marker:text-yellow-500">
+                <ul className="space-y-2 p-1 max-h-24 overflow-scroll text-muted-foreground text-start list-disc list-inside marker:text-yellow-500">
                   {translation.examples.slice(0, 2).map((example, idx) => (
                     <li key={idx}>{example}</li>
                   ))}
@@ -129,19 +110,19 @@ export default function FlashCard(props: FlashCardProps) {
               className="rounded-bl-3xl bg-red-500 text-red-100 dark:bg-red-800 dark:text-red-500"
               icon={<Frown />}
               text="Didn't know"
-              action={() => review(ReviewQuality.bad)}
+              action={() => review(id, ReviewQuality.bad)}
             />
             <ReviewButton
               className="bg-yellow-500 text-yellow-100 dark:bg-yellow-800 dark:text-yellow-500"
               icon={<Meh />}
               text="Almost knew"
-              action={() => review(ReviewQuality.normal)}
+              action={() => review(id, ReviewQuality.normal)}
             />
             <ReviewButton
               className="rounded-br-3xl bg-green-500 text-green-100 dark:bg-green-800 dark:text-green-500"
               icon={<Smile />}
               text="Knew it"
-              action={() => review(ReviewQuality.good)}
+              action={() => review(id, ReviewQuality.good)}
             />
           </div>
         </div>

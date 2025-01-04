@@ -57,7 +57,7 @@ type LGStatic = {
 
 async function downloadFile(url: string, path: string) {
   const filepath = process.cwd() + `/public${path}`;
-  https
+  return https
     .get(url, (response) => {
       const fileStream = createWriteStream(filepath);
       response.pipe(fileStream);
@@ -88,6 +88,7 @@ const scrapeCambridgeWord = async (word: string) => {
   const $ = cheerio.load(html);
 
   const pronunciations: InsertPronunciationDTO[] = [];
+  const downloadPs: Promise<any>[] = [];
 
   $(".dictionary:first-child")
     .first()
@@ -110,9 +111,11 @@ const scrapeCambridgeWord = async (word: string) => {
           };
           pronunciations.push(pronunciation);
 
-          downloadFile(originUrl, audio);
+          downloadPs.push(downloadFile(originUrl, audio));
         });
     });
+
+  await Promise.all(downloadPs);
 
   return pronunciations;
 };
@@ -130,6 +133,7 @@ const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
   const json = await res.json();
 
   try {
+    const downloadPs: Promise<any>[] = [];
     const staticJ = json["pageProps"]["initialState"]["static"] as LGStatic;
     const wordEntry = staticJ["wordEntry"]["words"][0];
     const nearByWords = staticJ["nearbyWords"].map((word) => word["entry"]);
@@ -155,8 +159,8 @@ const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
             photo: photoPath,
             thumbnail: thumbPath,
           };
-          downloadFile(photoOrigurl, photoPath);
-          downloadFile(thumbOrigurl, thumbPath);
+          downloadPs.push(downloadFile(photoOrigurl, photoPath));
+          downloadPs.push(downloadFile(thumbOrigurl, thumbPath));
         }
         if (ts["subTranslations"]) {
           subTranslations = ts["subTranslations"].map((st, stIx) => {
@@ -173,8 +177,8 @@ const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
                 thumbnail: thumbPath,
               };
 
-              downloadFile(photoOrigurl, photoPath);
-              downloadFile(thumbOrigurl, thumbPath);
+              downloadPs.push(downloadFile(photoOrigurl, photoPath));
+              downloadPs.push(downloadFile(thumbOrigurl, thumbPath));
             }
 
             const sExamples = examples[idx]["subTranslationExamples"] || [];
@@ -203,6 +207,7 @@ const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
         };
       }),
     };
+    await Promise.all(downloadPs);
 
     await insertOne(dto);
   } catch (error) {

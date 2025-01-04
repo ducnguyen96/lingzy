@@ -10,6 +10,7 @@ import { Progress } from "../ui/progress";
 import { Button } from "../ui/button";
 import { EmblaOptionsType } from "embla-carousel";
 import { cn } from "@/lib/utils";
+import { useGlobalLoading } from "../providers/global-loading-provider";
 
 export default function MyCarousel({
   todayWords,
@@ -17,6 +18,7 @@ export default function MyCarousel({
   todayWords: TodayWordEntity[];
 }) {
   const [index, setIndex] = useState(0);
+  const { toggleLoading } = useGlobalLoading();
   const len = todayWords.length;
 
   const opts: EmblaOptionsType = {
@@ -33,6 +35,7 @@ export default function MyCarousel({
     if (emblaApi) emblaApi.scrollNext();
     if (emblaApi1) emblaApi1.scrollNext();
     setIndex(index + 1);
+    toggleLoading();
   };
 
   return (

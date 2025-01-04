@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { META_THEME_COLORS } from "@/config/site";
 import { Toaster } from "@/components/ui/sonner";
+import { GlobalLoadingProvider } from "@/components/providers/global-loading-provider";
+import GlobalLoadingIndicator from "@/components/global-loading-indicator";
 
 export const metadata: Metadata = {
   title: "Lingzy",
@@ -47,13 +49,16 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SessionProvider>
-            <SidebarProvider defaultOpen={false}>
-              <AppSidebar />
-              <SidebarInset>
-                {children}
-                <Toaster />
-              </SidebarInset>
-            </SidebarProvider>
+            <GlobalLoadingProvider>
+              <SidebarProvider defaultOpen={false}>
+                <AppSidebar />
+                <SidebarInset>
+                  {children}
+                  <Toaster />
+                  <GlobalLoadingIndicator />
+                </SidebarInset>
+              </SidebarProvider>
+            </GlobalLoadingProvider>
           </SessionProvider>
         </ThemeProvider>
       </body>

@@ -26,8 +26,9 @@ export const wordsRelations = relations(words, ({ many }) => ({
   translations: many(translations),
 }));
 
-const insertWordSchema = createInsertSchema(words);
-export type InsertWordDTO = z.infer<typeof insertWordSchema> & {
+export type InsertWordDTO = z.infer<
+  ReturnType<typeof createInsertSchema<typeof words>>
+> & {
   pronunciations: InsertPronunciationDTO[];
   translations: InsertTranslationDTO[];
 };

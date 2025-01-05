@@ -40,8 +40,9 @@ export const translationRelations = relations(
   }),
 );
 
-const insertTranslationSchema = createInsertSchema(translations);
-export type InsertTranslationDTO = z.infer<typeof insertTranslationSchema> & {
+export type InsertTranslationDTO = z.infer<
+  ReturnType<typeof createInsertSchema<typeof translations>>
+> & {
   wordPhoto?: InsertWordPhotoDTO;
   subTranslations: InsertSubTranslationDTO[];
 };

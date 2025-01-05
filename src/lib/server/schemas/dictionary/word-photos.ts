@@ -25,5 +25,6 @@ export const wordPhotoRelations = relations(wordPhotos, ({ one }) => ({
   }),
 }));
 
-const insertWordPhotoSchema = createInsertSchema(wordPhotos);
-export type InsertWordPhotoDTO = z.infer<typeof insertWordPhotoSchema>;
+export type InsertWordPhotoDTO = z.infer<
+  ReturnType<typeof createInsertSchema<typeof wordPhotos>>
+>;

@@ -1,9 +1,9 @@
 import { DrizzleError, eq } from "drizzle-orm";
 import db from "../db";
-import { insertUserWordListDTO, userWordLists } from "../schemas";
+import { InsertUserWordListDTO, userWordLists } from "../schemas";
 import { DBUser } from "./user";
 
-export const addWordList = async (dto: insertUserWordListDTO) => {
+export const addWordList = async (dto: InsertUserWordListDTO) => {
   return db.insert(userWordLists).values(dto).returning();
 };
 

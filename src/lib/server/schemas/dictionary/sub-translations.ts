@@ -27,9 +27,8 @@ export const subTranslationRelations = relations(
   }),
 );
 
-const insertSubTranslationSchema = createInsertSchema(subTranslations);
 export type InsertSubTranslationDTO = z.infer<
-  typeof insertSubTranslationSchema
+  ReturnType<typeof createInsertSchema<typeof subTranslations>>
 > & {
   wordPhoto?: InsertWordPhotoDTO;
 };

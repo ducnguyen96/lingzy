@@ -22,8 +22,9 @@ export const userSettingsRelations = relations(userSettings, ({ one }) => ({
   }),
 }));
 
-const insertUserSettingSchema = createInsertSchema(userSettings);
-const updateUserSettingSchmea = createUpdateSchema(userSettings);
-
-export type InsertUserSettingDTO = z.infer<typeof insertUserSettingSchema>;
-export type UpdateUserSettingDTO = z.infer<typeof updateUserSettingSchmea>;
+export type InsertUserSettingDTO = z.infer<
+  ReturnType<typeof createInsertSchema<typeof userSettings>>
+>;
+export type UpdateUserSettingDTO = z.infer<
+  ReturnType<typeof createUpdateSchema<typeof userSettings>>
+>;

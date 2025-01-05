@@ -40,5 +40,6 @@ export const userDailyWordsRelations = relations(userDailyWords, ({ one }) => ({
   }),
 }));
 
-const updateDailyWordSchema = createUpdateSchema(userDailyWords);
-export type UpdateDailyWordDTO = z.infer<typeof updateDailyWordSchema>;
+export type UpdateDailyWordDTO = z.infer<
+  ReturnType<typeof createUpdateSchema<typeof userDailyWords>>
+>;

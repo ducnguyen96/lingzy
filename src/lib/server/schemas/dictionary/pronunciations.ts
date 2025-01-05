@@ -19,5 +19,6 @@ export const pronunciationsRelations = relations(pronunciations, ({ one }) => ({
   }),
 }));
 
-const insertPronunciationSchema = createInsertSchema(pronunciations);
-export type InsertPronunciationDTO = z.infer<typeof insertPronunciationSchema>;
+export type InsertPronunciationDTO = z.infer<
+  ReturnType<typeof createInsertSchema<typeof pronunciations>>
+>;

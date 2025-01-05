@@ -32,6 +32,6 @@ export const userWordListsRelations = relations(
   }),
 );
 
-const insertUserWordListSchema = createInsertSchema(userWordLists);
-
-export type insertUserWordListDTO = z.infer<typeof insertUserWordListSchema>;
+export type InsertUserWordListDTO = z.infer<
+  ReturnType<typeof createInsertSchema<typeof userWordLists>>
+>;

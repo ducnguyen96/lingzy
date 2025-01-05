@@ -13,7 +13,7 @@ import { translations } from "../dictionary/translations";
 import { createUpdateSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const userDailyWords = pgTable("user_daily_words", {
+export const dailyWords = pgTable("daily_words", {
   id: serial("id").primaryKey(),
   userId: text("user_id").notNull(),
   lang: text("lang").notNull(),
@@ -29,17 +29,17 @@ export const userDailyWords = pgTable("user_daily_words", {
   completedAt: timestamp("completed_at", { withTimezone: true }),
 });
 
-export const userDailyWordsRelations = relations(userDailyWords, ({ one }) => ({
+export const dailyWordsRelations = relations(dailyWords, ({ one }) => ({
   user: one(users, {
-    fields: [userDailyWords.userId],
+    fields: [dailyWords.userId],
     references: [users.id],
   }),
   word: one(translations, {
-    fields: [userDailyWords.translationId],
+    fields: [dailyWords.translationId],
     references: [translations.id],
   }),
 }));
 
 export type UpdateDailyWordDTO = z.infer<
-  ReturnType<typeof createUpdateSchema<typeof userDailyWords>>
+  ReturnType<typeof createUpdateSchema<typeof dailyWords>>
 >;

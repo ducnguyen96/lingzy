@@ -1,34 +1,34 @@
 import { DrizzleError, eq } from "drizzle-orm";
 import db from "../db";
-import { InsertUserWordListDTO, userWordLists } from "../schemas";
 import { DBUser } from "./user";
+import { InsertWordListDTO, wordLists } from "../schemas";
 
-export const addWordList = async (dto: InsertUserWordListDTO) => {
-  return db.insert(userWordLists).values(dto).returning();
+export const insertWordList = async (dto: InsertWordListDTO) => {
+  return db.insert(wordLists).values(dto).returning();
 };
 
-export const getWordLists = async (user: DBUser) => {
-  return db.query.userWordLists.findMany({
-    where: eq(userWordLists.userId, user.id),
+export const queryUserWordLists = async (user: DBUser) => {
+  return db.query.wordLists.findMany({
+    where: eq(wordLists.owner, user.id),
   });
 };
 
-export const addToWordList = async (
+export const insertWordToWordList = async (
   user: DBUser,
   translationId: number,
   wordListId: number,
 ) => {
-  const found = await db.query.userWordLists.findFirst({
-    where: eq(userWordLists.id, wordListId),
+  const found = await db.query.wordLists.findFirst({
+    where: eq(wordLists.id, wordListId),
   });
-  if (!found) throw new DrizzleError({ message: "WordList not found !" });
-  if (found.userId != user.id)
-    throw new DrizzleError({ message: "WordList not yours !" });
+  if (!found) throw new DrizzleError({ message: "WordList not found!" });
+  if (found.owner != user.id)
+    throw new DrizzleError({ message: "WordList not yours!" });
 
   if (found.translationIds.includes(translationId))
-    throw new DrizzleError({ message: "WordList already included the word" });
+    throw new DrizzleError({ message: "WordList already included the word!" });
   await db
-    .update(userWordLists)
+    .update(wordLists)
     .set({ translationIds: [...found.translationIds, translationId] })
-    .where(eq(userWordLists.userId, user.id));
+    .where(eq(wordLists.id, wordListId));
 };

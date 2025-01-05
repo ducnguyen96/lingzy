@@ -4,7 +4,7 @@ import {
   InsertUserDTO,
   UpdateUserSettingDTO,
   users,
-  userSettings,
+  settings,
 } from "../schemas";
 
 type User = NonNullable<Awaited<ReturnType<typeof getUserById>>>;
@@ -33,7 +33,7 @@ export const getUserByEmail = async (email: string) => {
 export const loginUser = async (userId: string) => {
   const found = await getUserById(userId);
   if (found?.setting) return found;
-  await db.insert(userSettings).values({ userId });
+  await db.insert(settings).values({ userId });
   return getUserById(userId);
 };
 
@@ -43,7 +43,7 @@ export const registerUser = async (dto: InsertUserDTO) => {
       .insert(users)
       .values(dto)
       .returning({ userId: users.id });
-    await tx.insert(userSettings).values({ userId: userIds[0].userId });
+    await tx.insert(settings).values({ userId: userIds[0].userId });
   });
 };
 
@@ -51,8 +51,5 @@ export const updateUserSetting = async (
   user: DBUser,
   dto: UpdateUserSettingDTO,
 ) => {
-  await db
-    .update(userSettings)
-    .set(dto)
-    .where(eq(userSettings.userId, user.id));
+  await db.update(settings).set(dto).where(eq(settings.userId, user.id));
 };

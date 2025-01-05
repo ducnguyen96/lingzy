@@ -1,7 +1,7 @@
 import { and, DrizzleError, eq, gte, isNull, lt } from "drizzle-orm";
 import db from "../db";
 import { DBUser } from "./user";
-import { translations, UpdateDailyWordDTO, userDailyWords } from "../schemas";
+import { translations, UpdateDailyWordDTO, dailyWords } from "../schemas";
 import { TZDate } from "@date-fns/tz";
 import {
   add,
@@ -34,10 +34,10 @@ export const insertToDailyWords = async (
 ) => {
   const now = new TZDate(new Date(), user.setting.currentTimezone);
   await db.transaction(async (tx) => {
-    const found = await tx.query.userDailyWords.findFirst({
+    const found = await tx.query.dailyWords.findFirst({
       where: and(
-        eq(userDailyWords.translationId, translationId),
-        eq(userDailyWords.userId, user.id),
+        eq(dailyWords.translationId, translationId),
+        eq(dailyWords.userId, user.id),
       ),
     });
     if (found) return;
@@ -48,7 +48,7 @@ export const insertToDailyWords = async (
     if (!translation)
       throw new DrizzleError({ message: "Translation not found" })!;
 
-    await tx.insert(userDailyWords).values({
+    await tx.insert(dailyWords).values({
       userId: user.id,
       lang: translation.lang,
       translationId: translationId,
@@ -61,10 +61,10 @@ export const insertToDailyWords = async (
 };
 
 export const queryDailyWordsOverview = async (user: DBUser) => {
-  const found = await db.query.userDailyWords.findMany({
+  const found = await db.query.dailyWords.findMany({
     where: and(
-      eq(userDailyWords.userId, user.id),
-      eq(userDailyWords.lang, user.setting.learningLang),
+      eq(dailyWords.userId, user.id),
+      eq(dailyWords.lang, user.setting.learningLang),
     ),
   });
 
@@ -145,12 +145,12 @@ export const queryDailyWordsOverview = async (user: DBUser) => {
 
 export const queryTodayWords = async (user: DBUser) => {
   const now = new TZDate(new Date(), user.setting.currentTimezone);
-  return db.query.userDailyWords.findMany({
+  return db.query.dailyWords.findMany({
     where: and(
-      eq(userDailyWords.userId, user.id),
-      lt(userDailyWords.nextReview, endOfDay(now)),
-      gte(userDailyWords.nextReview, startOfDay(now)),
-      isNull(userDailyWords.completedAt),
+      eq(dailyWords.userId, user.id),
+      lt(dailyWords.nextReview, endOfDay(now)),
+      gte(dailyWords.nextReview, startOfDay(now)),
+      isNull(dailyWords.completedAt),
     ),
     with: {
       word: {
@@ -174,8 +174,8 @@ export const patchTodayWord = async (
 ) => {
   const now = new TZDate(new Date(), user.setting.currentTimezone);
   await db.transaction(async (tx) => {
-    const found = await tx.query.userDailyWords.findFirst({
-      where: and(eq(userDailyWords.id, id), eq(userDailyWords.userId, user.id)),
+    const found = await tx.query.dailyWords.findFirst({
+      where: and(eq(dailyWords.id, id), eq(dailyWords.userId, user.id)),
     });
     if (!found) throw new DrizzleError({ message: "not found" });
 
@@ -201,6 +201,6 @@ export const patchTodayWord = async (
       dto.completedAt = now;
     }
 
-    await tx.update(userDailyWords).set(dto).where(eq(userDailyWords.id, id));
+    await tx.update(dailyWords).set(dto).where(eq(dailyWords.id, id));
   });
 };

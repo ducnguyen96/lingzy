@@ -2,10 +2,11 @@ import { relations } from "drizzle-orm";
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { userSettings } from "./user-settings";
-import { userAccounts } from "./user-accounts";
-import { userDailyWords } from "./user-daily-words";
-import { userWordLists } from "./user-word-lists";
+import { settings } from "./settings";
+import { accounts } from "./accounts";
+import { dailyWords } from "./daily-words";
+import { wordLists } from "../word-list/word-lists";
+import { wordListScores } from "./word-list-scores";
 
 export const users = pgTable("users", {
   id: text("id")
@@ -18,10 +19,11 @@ export const users = pgTable("users", {
 });
 
 export const usersRelations = relations(users, ({ many, one }) => ({
-  setting: one(userSettings),
-  accounts: many(userAccounts),
-  dailyWords: many(userDailyWords),
-  wordLists: many(userWordLists),
+  setting: one(settings),
+  accounts: many(accounts),
+  dailyWords: many(dailyWords),
+  wordLists: many(wordLists),
+  wordListScores: many(wordListScores),
 }));
 
 export type InsertUserDTO = z.infer<

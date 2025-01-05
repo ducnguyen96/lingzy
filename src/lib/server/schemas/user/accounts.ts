@@ -3,8 +3,8 @@ import { integer, pgTable, primaryKey, text } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 import { users } from "./users";
 
-export const userAccounts = pgTable(
-  "user_accounts",
+export const accounts = pgTable(
+  "accounts",
   {
     userId: text("userId").notNull(),
     type: text("type").$type<AdapterAccountType>().notNull(),
@@ -25,9 +25,9 @@ export const userAccounts = pgTable(
   }),
 );
 
-export const userAccountsRelations = relations(userAccounts, ({ one }) => ({
+export const accountsRelations = relations(accounts, ({ one }) => ({
   user: one(users, {
-    fields: [userAccounts.userId],
+    fields: [accounts.userId],
     references: [users.id],
   }),
 }));

@@ -1,6 +1,7 @@
 import { relations } from "drizzle-orm";
-import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
-import { userWordLists } from "./user-word-lists";
+import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { wordLists } from "../word-list/word-lists";
+import { users } from "./users";
 
 export const wordListScores = pgTable("word_list_scores", {
   id: serial("id").primaryKey(),
@@ -9,12 +10,17 @@ export const wordListScores = pgTable("word_list_scores", {
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
-  wordListId: text("word_list_id").notNull(),
+  wordListId: integer("word_list_id").notNull(),
+  userId: text("user_id").notNull(),
 });
 
 export const wordListScoresRelations = relations(wordListScores, ({ one }) => ({
-  wordList: one(userWordLists, {
+  wordList: one(wordLists, {
     fields: [wordListScores.wordListId],
-    references: [userWordLists.id],
+    references: [wordLists.id],
+  }),
+  user: one(users, {
+    fields: [wordListScores.userId],
+    references: [users.id],
   }),
 }));

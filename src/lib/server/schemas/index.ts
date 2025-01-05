@@ -6,9 +6,11 @@ export * from "./dictionary/word-photos";
 export * from "./dictionary/words";
 
 // user
-export * from "./user/user-accounts";
-export * from "./user/user-daily-words";
-export * from "./user/user-settings";
-export * from "./user/user-word-list-scores";
-export * from "./user/user-word-lists";
+export * from "./user/accounts";
+export * from "./user/daily-words";
+export * from "./user/settings";
+export * from "./user/word-list-scores";
 export * from "./user/users";
+
+// word-list
+export * from "./word-list/word-lists";

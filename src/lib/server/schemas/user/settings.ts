@@ -4,7 +4,7 @@ import { users } from "./users";
 import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const userSettings = pgTable("user_settings", {
+export const settings = pgTable("settings", {
   id: serial("id").primaryKey(),
   theme: text("theme").notNull().default("system"),
   learningLang: text("learning_lang").notNull().default("en"),
@@ -15,16 +15,16 @@ export const userSettings = pgTable("user_settings", {
   userId: text("user_id").notNull(),
 });
 
-export const userSettingsRelations = relations(userSettings, ({ one }) => ({
+export const settingsRelations = relations(settings, ({ one }) => ({
   user: one(users, {
-    fields: [userSettings.userId],
+    fields: [settings.userId],
     references: [users.id],
   }),
 }));
 
 export type InsertUserSettingDTO = z.infer<
-  ReturnType<typeof createInsertSchema<typeof userSettings>>
+  ReturnType<typeof createInsertSchema<typeof settings>>
 >;
 export type UpdateUserSettingDTO = z.infer<
-  ReturnType<typeof createUpdateSchema<typeof userSettings>>
+  ReturnType<typeof createUpdateSchema<typeof settings>>
 >;

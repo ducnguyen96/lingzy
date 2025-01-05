@@ -3,16 +3,12 @@ import { overviewConf } from "@/config/overview";
 import { cn } from "@/lib/utils";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { DailyWordsOverview } from "@/lib/server/services/daily-word";
-import { TZDate } from "@date-fns/tz";
-import { format } from "date-fns";
 
 export default function Overview({
   overview,
 }: {
   overview: DailyWordsOverview;
 }) {
-  const date = new TZDate("2025-01-04 18:30:53.655");
-  console.log(format(date, "EEE"));
   return (
     <div className="lg:p-6 lg:bg-primary/5  rounded-3xl">
       <div className="pb-4 flex items-center justify-between">

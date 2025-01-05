@@ -12,7 +12,7 @@ export async function scrape(body: ScrapeBody) {
     await scrapeLangeek(body, true);
     await new Promise((resolve) => setTimeout(resolve, 3000));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return { ok: false };
   }
   return { ok: true };

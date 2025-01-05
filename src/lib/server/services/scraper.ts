@@ -55,6 +55,7 @@ type LGStatic = {
   nlpExactExamplesItem: NlpExactExamplesItem[];
 };
 
+type DownLoadFilePromise = ReturnType<typeof downloadFile>;
 async function downloadFile(url: string, path: string) {
   const filepath = process.cwd() + `/public${path}`;
   return https
@@ -88,7 +89,7 @@ const scrapeCambridgeWord = async (word: string) => {
   const $ = cheerio.load(html);
 
   const pronunciations: InsertPronunciationDTO[] = [];
-  const downloadPs: Promise<any>[] = [];
+  const downloadPs: DownLoadFilePromise[] = [];
 
   $(".dictionary:first-child")
     .first()
@@ -133,7 +134,7 @@ const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
   const json = await res.json();
 
   try {
-    const downloadPs: Promise<any>[] = [];
+    const downloadPs: DownLoadFilePromise[] = [];
     const staticJ = json["pageProps"]["initialState"]["static"] as LGStatic;
     const wordEntry = staticJ["wordEntry"]["words"][0];
     const nearByWords = staticJ["nearbyWords"].map((word) => word["entry"]);

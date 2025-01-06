@@ -24,12 +24,14 @@ type WordPhoto = {
 };
 
 type SubTranslation = {
+  id: number;
   level: string;
   translation: string;
   wordPhoto: WordPhoto;
 };
 
 type Translation = {
+  id: number;
   translation: string;
   synonyms: { word: string }[];
   antonyms: { word: string }[];
@@ -52,7 +54,12 @@ type LGStatic = {
     }[];
   };
   nearbyWords: { entry: string }[];
-  nlpExactExamplesItem: NlpExactExamplesItem[];
+  simpleExamples: Record<
+    number,
+    {
+      words: string[];
+    }[]
+  >;
 };
 
 type DownLoadFilePromise = ReturnType<typeof downloadFile>;
@@ -121,6 +128,59 @@ const scrapeCambridgeWord = async (word: string) => {
   return pronunciations;
 };
 
+const scrapeLangeekWordV2 = async (lang: string, word: string, id: number) => {
+  const found = await db.query.words.findFirst({
+    where: and(eq(words.lang, lang), eq(words.word, word)),
+  });
+  if (found) return;
+
+  const domain = "dictionary.langeek.co";
+  const baseUrl = `https://${domain}`;
+  const source = `${baseUrl}/${lang}/word/${id}?entry=${word}`;
+
+  const response = await fetch(source, {
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
+    },
+  });
+  if (!response.ok) return [];
+
+  const dto: InsertWordDTO = {
+    lang,
+    word,
+    nearByWords: [],
+    translations: [],
+    pronunciations: [],
+  };
+
+  const html = await response.text();
+  const $ = cheerio.load(html);
+
+  try {
+    $("div.tw-mt-6:nth-child(2)")
+      .first()
+      .find("a")
+      .each((_, el) => {
+        dto.nearByWords?.push($(el).text());
+      });
+
+    const pronunciations = await scrapeCambridgeWord(word);
+    dto.pronunciations = pronunciations;
+
+    const downloadPs: DownLoadFilePromise[] = [];
+
+    // TODO: finish the whole thing
+
+    await Promise.all(downloadPs);
+
+    await insertOne(dto);
+  } catch (error) {
+    console.error("word: ", word);
+    console.error(error);
+  }
+};
+
 const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
   const found = await db.query.words.findFirst({
     where: and(eq(words.lang, lang), eq(words.word, word)),
@@ -128,7 +188,7 @@ const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
   if (found) return;
 
   const res = await fetch(
-    `https://dictionary.langeek.co/_next/data/lFF5zXONOfZDe1GDNta6a/${lang}/word/${id}.json`,
+    `https://dictionary.langeek.co/_next/data/O_SZAZwTCwgaW7-UCF_5h/${lang}/word/${id}.json`,
   );
   if (!res.ok) return;
   const json = await res.json();
@@ -138,7 +198,7 @@ const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
     const staticJ = json["pageProps"]["initialState"]["static"] as LGStatic;
     const wordEntry = staticJ["wordEntry"]["words"][0];
     const nearByWords = staticJ["nearbyWords"].map((word) => word["entry"]);
-    const examples = staticJ["nlpExactExamplesItem"];
+    const examples = staticJ["simpleExamples"];
 
     const pronunciations = await scrapeCambridgeWord(word);
 
@@ -164,7 +224,7 @@ const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
           downloadPs.push(downloadFile(thumbOrigurl, thumbPath));
         }
         if (ts["subTranslations"]) {
-          subTranslations = ts["subTranslations"].map((st, stIx) => {
+          subTranslations = ts["subTranslations"].map((st) => {
             let wordPhoto;
             if (st["wordPhoto"]) {
               const photoOrigurl = st["wordPhoto"]["photo"];
@@ -182,12 +242,12 @@ const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
               downloadPs.push(downloadFile(thumbOrigurl, thumbPath));
             }
 
-            const sExamples = examples[idx]["subTranslationExamples"] || [];
+            const sExamples = examples[st.id] || [];
 
             return {
               level: st["level"],
               translation: st["translation"],
-              examples: sExamples[stIx].map((ex) => ex[0].join("")),
+              examples: sExamples.map((x) => x.words.join("")),
               wordPhoto,
               parentId: 1,
             };
@@ -198,7 +258,7 @@ const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
           translation: ts["translation"],
           synonyms: ts.synonyms.map((s) => s["word"]),
           antonyms: ts.antonyms.map((s) => s["word"]),
-          examples: examples[idx]["examples"].map((ex) => ex[0].join("")),
+          examples: examples[ts.id].map((ex) => ex.words.join("")),
           level: ts["level"],
           title: ts["title"],
           type: ts["type"],

@@ -55,7 +55,7 @@ export default function MyCarousel({
 
   return (
     <>
-      <div className="z-10 bg-background border p-4 md:py-6 md:px-12 lg:px-28 xl:px-52 2xl:px-80">
+      <div className="z-10 bg-background border-b p-4 md:py-6 md:px-12 lg:px-28 xl:px-52 2xl:px-80">
         <div className="flex items-center gap-6 font-semibold">
           <div className="flex items-center gap-4">
             <GraduationCap className="text-primary" size={32} />
@@ -84,7 +84,7 @@ export default function MyCarousel({
         <EmblaCarousel
           emblaApi={emblaApi1}
           emblaRef={emblaRef1}
-          className="mt-4 hidden lg:block"
+          className="mt-4"
           effect={["opacity"]}
         >
           {todayWords.map((entity, idx) => (

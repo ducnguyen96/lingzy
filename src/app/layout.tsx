@@ -10,6 +10,7 @@ import { META_THEME_COLORS } from "@/config/site";
 import { Toaster } from "@/components/ui/sonner";
 import { GlobalLoadingProvider } from "@/components/providers/global-loading-provider";
 import GlobalLoadingIndicator from "@/components/global-loading-indicator";
+import WordSelectListener from "@/components/word-select-listener";
 
 export const metadata: Metadata = {
   title: "Lingzy",
@@ -56,6 +57,7 @@ export default function RootLayout({
                   {children}
                   <Toaster />
                   <GlobalLoadingIndicator />
+                  <WordSelectListener />
                 </SidebarInset>
               </SidebarProvider>
             </GlobalLoadingProvider>

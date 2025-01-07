@@ -30,8 +30,8 @@ export default function WordBox({
           <PronunciationButton key={item.id} {...item} />
         ))}
       </div>
-      <div className="flex items-center p-4 justify-between border rounded-b-2xl">
-        <div className="flex gap-4">
+      <div className="flex flex-wrap items-center p-4 justify-between border rounded-b-2xl">
+        <div className="flex flex-wrap gap-4">
           {translations.map(({ type, quant }, idx) => (
             <Link
               key={idx}

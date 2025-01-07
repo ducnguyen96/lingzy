@@ -4,6 +4,7 @@ import db from "../db";
 import {
   InsertPronunciationDTO,
   InsertSubTranslationDTO,
+  InsertTranslationDTO,
   InsertWordDTO,
   words,
 } from "../schemas";
@@ -78,6 +79,71 @@ async function downloadFile(url: string, path: string) {
       console.error(`Error downloading file: ${error.message}`);
     });
 }
+
+const scrapeSohaWord = async (word: string) => {
+  const domain = "tratu.soha.vn";
+  const baseUrl = `http://${domain}`;
+  const source = `${baseUrl}/dict/en_vn/${word}`;
+
+  const dtos: InsertTranslationDTO[] = [];
+
+  try {
+    const response = await fetch(source, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${source}: ${response.statusText}`);
+    }
+
+    const html = await response.text();
+    const $ = cheerio.load(html);
+
+    $("#bodyContent").each((_, dictE) => {
+      $(dictE)
+        .find("#content-3")
+        .each((_, groups) => {
+          const type = $(groups).find("h3 > span").first().text().trim();
+          const lowercased = type.toLowerCase();
+          if (lowercased.includes("đồng nghĩa")) return;
+          if (lowercased.includes("trái nghĩa")) return;
+
+          $(groups)
+            .find("#content-5")
+            .each((_, trans) => {
+              const translation = $(trans).find("h5 > span").first();
+              const dto: InsertTranslationDTO = {
+                type,
+                lang: "vi",
+                title: translation.text(),
+                translation: translation.text(),
+                examples: [],
+                subTranslations: [],
+                wordId: 1,
+              };
+              let dds = $(trans).find("dl > dd > dl > dd");
+              if (dds.length % 2) {
+                // @ts-expect-error should be fine
+                dds = [translation, ...dds];
+              }
+              for (let i = 0; i < dds.length; i += 2) {
+                dto.examples?.push(
+                  `${$(dds[i]).text()} (${$(dds[i + 1]).text()})`,
+                );
+              }
+
+              dtos.push(dto);
+            });
+        });
+    });
+    return dtos;
+  } catch (error) {
+    console.error("Error fetching page:", error);
+  }
+};
 
 const scrapeCambridgeWord = async (word: string) => {
   const domain = "dictionary.cambridge.org";
@@ -269,6 +335,9 @@ const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
       }),
     };
     await Promise.all(downloadPs);
+
+    const sohaTranslations = await scrapeSohaWord(word);
+    dto.translations = [...dto.translations, ...(sohaTranslations || [])];
 
     await insertOne(dto);
   } catch (error) {

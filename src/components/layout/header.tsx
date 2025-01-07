@@ -2,17 +2,13 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import Link from "next/link";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import UserButton from "../user-button";
 import { ModeToggle } from "../mode-toggle";
-import { learnFeatures } from "@/config/features";
-import { cn } from "@/lib/utils";
 
 const { SITE_NAME } = process.env;
 
@@ -33,24 +29,6 @@ export default function Header() {
                   Dictionary
                 </NavigationMenuLink>
               </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Learn</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                {learnFeatures.map(({ title, href, color }, idx) => (
-                  <Link key={idx} href={href} legacyBehavior passHref>
-                    <NavigationMenuLink
-                      className={cn(
-                        navigationMenuTriggerStyle(),
-                        color.icon,
-                        "w-full",
-                      )}
-                    >
-                      {title}
-                    </NavigationMenuLink>
-                  </Link>
-                ))}
-              </NavigationMenuContent>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>

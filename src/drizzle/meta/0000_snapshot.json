@@ -1,5 +1,5 @@
 {
-  "id": "312b015d-2ef7-456c-90d2-a271827be7ef",
+  "id": "d52b90ef-d906-4022-aa8b-99937176f80e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -607,18 +607,24 @@
           "primaryKey": false,
           "notNull": true
         },
-        "state": {
-          "name": "state",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'pending'"
-        },
         "description": {
           "name": "description",
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "thumbnail": {
+          "name": "thumbnail",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "visibility": {
+          "name": "visibility",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'private'"
         },
         "translation_ids": {
           "name": "translation_ids",

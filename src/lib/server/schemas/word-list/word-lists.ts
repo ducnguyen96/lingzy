@@ -8,8 +8,9 @@ import { z } from "zod";
 export const wordLists = pgTable("word_lists", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
-  state: text("state").notNull().default("pending"),
   description: text("description"),
+  thumbnail: text("thumbnail"),
+  visibility: text("visibility").notNull().default("private"),
   translationIds: integer("translation_ids")
     .array()
     .notNull()
@@ -31,7 +32,6 @@ export const wordListsRelations = relations(wordLists, ({ one, many }) => ({
     fields: [wordLists.owner],
     references: [users.id],
   }),
-
   scores: many(wordListScores),
 }));
 

@@ -102,8 +102,9 @@ CREATE TABLE "users" (
 CREATE TABLE "word_lists" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
-	"state" text DEFAULT 'pending' NOT NULL,
 	"description" text,
+	"thumbnail" text,
+	"visibility" text DEFAULT 'private' NOT NULL,
 	"translation_ids" integer[] DEFAULT '{}'::integer[] NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone,

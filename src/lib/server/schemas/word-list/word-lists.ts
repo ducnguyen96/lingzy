@@ -19,17 +19,17 @@ export const wordLists = pgTable("word_lists", {
     .defaultNow()
     .notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }),
-  origin: text("origin").notNull(),
-  owner: text("owner").notNull(),
+  originId: text("origin").notNull(),
+  ownerId: text("owner").notNull(),
 });
 
 export const wordListsRelations = relations(wordLists, ({ one, many }) => ({
   origin: one(users, {
-    fields: [wordLists.origin],
+    fields: [wordLists.originId],
     references: [users.id],
   }),
   owner: one(users, {
-    fields: [wordLists.owner],
+    fields: [wordLists.ownerId],
     references: [users.id],
   }),
   scores: many(wordListScores),

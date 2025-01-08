@@ -7,6 +7,7 @@ import {
   BookA,
   BrainCircuit,
   CalendarSync,
+  Folders,
   List,
   PanelsTopLeft,
 } from "lucide-react";
@@ -42,6 +43,23 @@ const dashboard: NavNestedItem[] = [
         title: "Learn",
         href: "/flashcard/daily-words",
         Icon: BrainCircuit,
+      },
+    ],
+  },
+  {
+    title: "My WordLists",
+    href: "/dashboard/word-lists",
+    Icon: Folders,
+    items: [
+      {
+        title: "Overview",
+        href: "/dashboard/word-lists/overview",
+        Icon: PanelsTopLeft,
+      },
+      {
+        title: "Listing",
+        href: "/dashboard/word-lists/list",
+        Icon: List,
       },
     ],
   },

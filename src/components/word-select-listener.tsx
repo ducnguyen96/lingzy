@@ -5,9 +5,8 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { Save } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import DictContentDialog from "./dict-content-dialog";
 
 export default function WordSelectListener() {
   const [selectionInfo, setSelectionInfo] = useState({
@@ -67,9 +66,7 @@ export default function WordSelectListener() {
         className={selectionInfo.show ? "p-0 w-fit flex" : "hidden"}
       >
         <Separator orientation="vertical" className="h-fit" />
-        <Button variant="ghost" size="icon">
-          <Save />
-        </Button>
+        <DictContentDialog word={selectionInfo.text.split(" ")[0]} />
       </PopoverContent>
     </Popover>
   );

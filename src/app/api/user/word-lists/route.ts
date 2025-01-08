@@ -1,10 +1,9 @@
 import { auth } from "@/auth";
 import { InsertWordListDTO } from "@/lib/server/schemas";
-import { insertToDailyWords } from "@/lib/server/services/daily-word";
 import {
   insertWordList,
   insertWordToWordList,
-  queryUserWordLists,
+  queryUserWordlists,
   removeWordFromWordList,
 } from "@/lib/server/services/word-list";
 import { unauthorized } from "next/navigation";
@@ -13,7 +12,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET() {
   const session = await auth();
   if (!session || !session.user) unauthorized();
-  const data = await queryUserWordLists(session.user);
+  const data = await queryUserWordlists(session.user);
   return NextResponse.json({
     message: "Fetched successfully",
     data: data,

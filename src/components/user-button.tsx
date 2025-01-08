@@ -24,22 +24,22 @@ import { DailyWordBadge } from "./word-count-badge";
 
 const menuItems = [
   {
-    title: "daily words",
+    title: "Daily Words",
     href: "/dashboard/daily-words/overview",
     icon: { icon: CalendarSync },
   },
   {
-    title: "my word lists",
-    href: "/dashboard/my-category",
+    title: "My WordLists",
+    href: "/dashboard/word-lists/list",
     icon: { icon: Folders },
   },
   {
-    title: "bookmarks",
+    title: "Bookmarks",
     href: "/dashboard/bookmarks",
     icon: { icon: Bookmark },
   },
   {
-    title: "stats",
+    title: "Stats",
     href: "/dashboard/my-stats",
     icon: { icon: ChartColumn },
   },
@@ -105,7 +105,7 @@ export default function UserButton() {
                 >
                   <div className="flex items-center gap-2">
                     <icon.icon size={16} />
-                    <p className="capitalize">{title}</p>
+                    <p>{title}</p>
                   </div>
                   {idx === 0 ? <DailyWordBadge /> : null}
                 </Link>

@@ -16,8 +16,8 @@ export const queryById = async (id: number) => {
 };
 
 export const insertWordList = async (user: DBUser, dto: InsertWordListDTO) => {
-  dto.origin = user.id;
-  dto.owner = user.id;
+  dto.originId = user.id;
+  dto.ownerId = user.id;
   const ids = await db
     .insert(wordLists)
     .values(dto)
@@ -25,10 +25,14 @@ export const insertWordList = async (user: DBUser, dto: InsertWordListDTO) => {
   return queryById(ids[0].id);
 };
 
-export const queryUserWordLists = async (user: DBUser) => {
+export const queryUserWordlists = async (user: DBUser) => {
   return db.query.wordLists.findMany({
-    where: eq(wordLists.owner, user.id),
+    where: eq(wordLists.ownerId, user.id),
     orderBy: [asc(wordLists.createdAt)],
+    with: {
+      owner: true,
+      origin: true,
+    },
   });
 };
 
@@ -41,7 +45,7 @@ export const insertWordToWordList = async (
     where: eq(wordLists.id, wordListId),
   });
   if (!found) throw new DrizzleError({ message: "WordList not found!" });
-  if (found.owner != user.id)
+  if (found.ownerId != user.id)
     throw new DrizzleError({ message: "WordList not yours!" });
 
   const now = new TZDate(new Date(), user.setting.currentTimezone);
@@ -63,7 +67,7 @@ export const removeWordFromWordList = async (
     where: eq(wordLists.id, wordListId),
   });
   if (!found) throw new DrizzleError({ message: "WordList not found!" });
-  if (found.owner != user.id)
+  if (found.ownerId != user.id)
     throw new DrizzleError({ message: "WordList not yours!" });
 
   const now = new TZDate(new Date(), user.setting.currentTimezone);

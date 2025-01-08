@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,14 +25,17 @@ import {
 } from "../ui/form";
 import { Switch } from "../ui/switch";
 import AvatarUploadButton from "../avatar-upload-button";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 
 import { useGlobalLoading } from "../providers/global-loading-provider";
 import { WordListEntity } from "@/lib/server/services/word-list";
+import { cn } from "@/lib/utils";
 
 interface Props {
-  myWordLists: WordListEntity[];
-  setMyWordLists: Dispatch<SetStateAction<WordListEntity[]>>;
+  className?: string;
+  triggerButton?: ReactNode;
+  myWordLists?: WordListEntity[];
+  setMyWordLists?: Dispatch<SetStateAction<WordListEntity[]>>;
 }
 
 const formSchema = z.object({
@@ -41,11 +45,9 @@ const formSchema = z.object({
   isPublic: z.boolean().default(false),
 });
 
-export default function AddNewWordListDialog({
-  myWordLists,
-  setMyWordLists,
-}: Props) {
-  const title = "Add new WordList";
+export default function AddNewWordListDialog(props: Props) {
+  const title = "Add new Wordlist";
+  const { myWordLists, setMyWordLists, triggerButton, className } = props;
   const [open, setOpen] = useState(false);
   const { setLoading } = useGlobalLoading();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -68,18 +70,24 @@ export default function AddNewWordListDialog({
       }),
     });
     const json = await res.json();
-    setMyWordLists([...myWordLists, json.data]);
+    if (myWordLists && setMyWordLists) {
+      setMyWordLists([...myWordLists, json.data]);
+    }
     setLoading(false);
     setOpen(false);
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="ghost">
-          <CirclePlus />
-          {title}
-        </Button>
+      <DialogTrigger asChild className={cn("", className)}>
+        {triggerButton ? (
+          triggerButton
+        ) : (
+          <Button variant="ghost">
+            <CirclePlus />
+            {title}
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -100,7 +108,9 @@ export default function AddNewWordListDialog({
                         fieldName="thumbnail"
                       />
                     </FormControl>
-                    <FormDescription>WordList's thumbnail.</FormDescription>
+                    <FormDescription>
+                      Wordlist&apos;s thumbnail.
+                    </FormDescription>
                   </div>
                 </FormItem>
               )}
@@ -114,7 +124,7 @@ export default function AddNewWordListDialog({
                   <FormControl>
                     <Input placeholder="Food" {...field} />
                   </FormControl>
-                  <FormDescription>WordList's title.</FormDescription>
+                  <FormDescription>WordList&apos;s title.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -131,7 +141,9 @@ export default function AddNewWordListDialog({
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>WordList's description.</FormDescription>
+                  <FormDescription>
+                    WordList&apos;s description.
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -144,7 +156,7 @@ export default function AddNewWordListDialog({
                   <FormLabel>Publicly</FormLabel>
                   <div className="flex items-center justify-between">
                     <FormDescription>
-                      Do you want your word list to be public?
+                      Do you want your Wordlist to be public?
                     </FormDescription>
                     <FormControl>
                       <Switch onCheckedChange={field.onChange} />

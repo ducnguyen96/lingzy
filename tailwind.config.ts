@@ -45,6 +45,9 @@ export default {
   safelist: safelistLiteral,
   theme: {
     extend: {
+      gridTemplateColumns: {
+        "16": "repeat(16, minmax(0, 1fr))",
+      },
       keyframes: {
         wiggle: {
           "0%, 100%": { transform: "rotate(-5deg)" },

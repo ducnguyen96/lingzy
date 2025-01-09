@@ -83,13 +83,13 @@ export const insertWordToWordList = async (
     .where(eq(wordLists.id, wordListId));
 };
 
-export const removeWordFromWordList = async (
+export const deleteWordFromWordlist = async (
   user: DBUser,
   translationId: number,
-  wordListId: number,
+  wordlistId: number,
 ) => {
   const found = await db.query.wordLists.findFirst({
-    where: eq(wordLists.id, wordListId),
+    where: eq(wordLists.id, wordlistId),
   });
   if (!found) throw new DrizzleError({ message: "WordList not found!" });
   if (found.ownerId != user.id)
@@ -102,5 +102,5 @@ export const removeWordFromWordList = async (
       translationIds: found.translationIds.filter((id) => id !== translationId),
       updatedAt: now,
     })
-    .where(eq(wordLists.id, wordListId));
+    .where(eq(wordLists.id, wordlistId));
 };

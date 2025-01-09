@@ -20,6 +20,7 @@ export default async function Page({
           {translations.map((entity) => (
             <Translation
               key={entity.id}
+              wordlistId={id}
               entity={entity}
               className="col-span-8 md:col-span-4 xl:col-span-2"
             />

@@ -4,7 +4,7 @@ import {
   insertWordList,
   insertWordToWordList,
   queryUserWordlists,
-  removeWordFromWordList,
+  deleteWordFromWordlist,
 } from "@/lib/server/services/word-list";
 import { unauthorized } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
@@ -52,7 +52,7 @@ export async function PATCH(req: NextRequest) {
 
   const removed = old.filter((id) => {
     if (newIds.includes(id)) return true;
-    return removeWordFromWordList(session.user!, body.translationId, id);
+    return deleteWordFromWordlist(session.user!, body.translationId, id);
   });
 
   await Promise.all([...added, ...removed]);

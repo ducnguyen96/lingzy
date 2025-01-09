@@ -1,18 +1,26 @@
-import { Button } from "@/components/ui/button";
 import { wordTypeToColor } from "@/config/features";
 import { noPhoto } from "@/config/placeholder";
 import { WordListWithTranslations } from "@/lib/server/services/word-list";
 import { cn } from "@/lib/utils";
-import { CircleX } from "lucide-react";
 import Image from "next/image";
+import DeleteTranslation from "./delete-translation";
+import { removeWordFromWordlist } from "@/lib/server/mutations/user/word-lists";
+import { revalidatePath } from "next/cache";
 
 interface Props {
   className?: string;
   entity: WordListWithTranslations["translations"][0];
+  wordlistId: number;
 }
 export function Translation(props: Props) {
-  const { className, entity } = props;
-  const { wordPhoto, type, word } = entity;
+  const { className, entity, wordlistId } = props;
+  const { wordPhoto, type, word, id } = entity;
+
+  const deleteTranslation = async () => {
+    "use server";
+    await removeWordFromWordlist(id, wordlistId);
+    revalidatePath(`/dashboard/word-lists/list/${wordlistId}`);
+  };
 
   return (
     <div
@@ -37,13 +45,7 @@ export function Translation(props: Props) {
       >
         {type}
       </span>
-      <Button
-        variant="secondary"
-        className="absolute right-2 top-2 text-destructive hidden group-hover:flex"
-        size="icon"
-      >
-        <CircleX />
-      </Button>
+      <DeleteTranslation action={deleteTranslation} />
     </div>
   );
 }

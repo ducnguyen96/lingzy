@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { noPhoto } from "@/config/placeholder";
+import { toggleVisibility } from "@/lib/server/mutations/user/word-lists";
 import { WordListEntity } from "@/lib/server/services/word-list";
 import { TZDate } from "@date-fns/tz";
 
@@ -15,8 +16,14 @@ interface Props {
 }
 
 export default function Overview({ wordList }: Props) {
-  const { thumbnail, title, visibility, createdAt } = wordList;
+  const { thumbnail, title, visibility, createdAt, id } = wordList;
   const date = new TZDate(createdAt);
+  const isPublic = visibility === "public";
+
+  const onClickSwitch = async () => {
+    "use server";
+    await toggleVisibility(id);
+  };
 
   return (
     <div className="p-4 bg-primary/5 rounded-3xl shadow-foreground/30 shadow">
@@ -31,7 +38,11 @@ export default function Overview({ wordList }: Props) {
           />
           <div className="flex items-center space-x-2">
             <Label htmlFor="airplane-mode">Private</Label>
-            <Switch id="airplane-mode" />
+            <Switch
+              id="airplane-mode"
+              checked={isPublic}
+              onClick={onClickSwitch}
+            />
             <Label htmlFor="airplane-mode">Public</Label>
           </div>
         </div>

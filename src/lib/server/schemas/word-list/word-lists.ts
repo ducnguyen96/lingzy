@@ -2,7 +2,7 @@ import { relations, sql } from "drizzle-orm";
 import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 import { users } from "../user/users";
 import { wordListScores } from "../user/word-list-scores";
-import { createInsertSchema } from "drizzle-zod";
+import { createInsertSchema, createUpdateSchema } from "drizzle-zod";
 import { z } from "zod";
 
 export const wordLists = pgTable("word_lists", {
@@ -37,4 +37,8 @@ export const wordListsRelations = relations(wordLists, ({ one, many }) => ({
 
 export type InsertWordListDTO = z.infer<
   ReturnType<typeof createInsertSchema<typeof wordLists>>
+>;
+
+export type UpdateWordListDTO = z.infer<
+  ReturnType<typeof createUpdateSchema<typeof wordLists>>
 >;

@@ -1,7 +1,12 @@
 import { asc, DrizzleError, eq, inArray } from "drizzle-orm";
 import db from "../db";
 import { DBUser } from "./user";
-import { InsertWordListDTO, translations, wordLists } from "../schemas";
+import {
+  InsertWordListDTO,
+  translations,
+  UpdateWordListDTO,
+  wordLists,
+} from "../schemas";
 import { TZDate } from "@date-fns/tz";
 
 export type WordListEntity = NonNullable<Awaited<ReturnType<typeof queryById>>>;
@@ -103,4 +108,8 @@ export const deleteWordFromWordlist = async (
       updatedAt: now,
     })
     .where(eq(wordLists.id, wordlistId));
+};
+
+export const updateWordList = async (id: number, dto: UpdateWordListDTO) => {
+  await db.update(wordLists).set(dto).where(eq(wordLists.id, id));
 };

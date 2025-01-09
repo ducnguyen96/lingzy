@@ -100,10 +100,8 @@ export default function EmblaCarousel(props: PropType) {
   }, [emblaApi, tweenScale]);
 
   return (
-    <div className={cn("m-auto", className)}>
-      <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex">{children}</div>
-      </div>
+    <div className={cn("overflow-hidden", className)} ref={emblaRef}>
+      <div className="flex">{children}</div>
     </div>
   );
 }

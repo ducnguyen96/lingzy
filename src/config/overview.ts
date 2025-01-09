@@ -33,7 +33,7 @@ export const overviewConf: OverviewConf = {
   },
 };
 
-export const everyComp = {
+export const everyComp: Record<string, { title: string }> = {
   every1: {
     title: "Everyday",
   },

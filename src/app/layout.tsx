@@ -39,7 +39,7 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-svh bg-background font-sans antialiased",
+          "font-sans antialiased",
           fontSans.variable,
           fontMono.variable,
         )}

@@ -6,6 +6,14 @@
   scroll-behavior: smooth !important;
 }
 
+main {
+  max-width: 100%;
+}
+
+div[data-variant="sidebar"][data-state="expanded"] + main {
+  max-width: calc(100% - var(--sidebar-width));
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -19,7 +19,7 @@ export function Wordlist(props: {
 
   return (
     <Link
-      href={`/dashboard/word-lists/details/${id}`}
+      href={`/dashboard/word-lists/list/${id}`}
       className={cn(
         "space-y-4 bg-background p-4 rounded-3xl hover:shadow-lg hover:shadow-foreground/30",
         className,

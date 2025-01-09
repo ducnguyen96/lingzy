@@ -5,7 +5,14 @@ import { useActionState, useEffect, useState, useTransition } from "react";
 import { useDictSearch } from "@/components/providers/dict-search-provider";
 import { scrape } from "@/lib/server/mutations/dictionary/scrape";
 
-export default function NoResult() {
+interface Props {
+  customAction?: {
+    word: string;
+    callBack: () => void;
+  };
+}
+
+export default function NoResult({ customAction }: Props) {
   const { search, formAction: searchAction } = useDictSearch();
   const [progress, setProgress] = useState(10);
 
@@ -20,7 +27,10 @@ export default function NoResult() {
       });
     }, 300);
 
-    const { ok } = await scrape({ word: search, lang: "en" });
+    const { ok } = await scrape({
+      word: customAction?.word || search,
+      lang: "en",
+    });
 
     clearInterval(interval);
     setProgress(100);
@@ -33,7 +43,7 @@ export default function NoResult() {
   const [, startTransition] = useTransition();
 
   useEffect(() => {
-    if (state) startTransition(searchAction);
+    if (state) startTransition(customAction?.callBack || searchAction);
   }, [state]);
 
   return (

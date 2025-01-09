@@ -4,7 +4,7 @@ import { Wordlist, WordlistsFallback } from "./wordlist";
 
 async function Wordlists() {
   const bookmarkWL: any[] = await new Promise((resolve) =>
-    setTimeout(() => resolve([]), 3000),
+    setTimeout(() => resolve([]), 1000),
   );
   return (
     <div className="grid grid-flow-col auto-cols-max gap-6">
@@ -22,7 +22,7 @@ async function Wordlists() {
 
 export default function BookmarkWordlists() {
   return (
-    <div className="p-6 space-y-6 bg-primary/10 text-lg font-semibold">
+    <div className="p-6 space-y-6 bg-primary/10 text-lg font-semibold rounded-3xl">
       <div className="flex gap-2 items-center">
         <Bookmark />
         <span>Bookmarked Wordlists:</span>

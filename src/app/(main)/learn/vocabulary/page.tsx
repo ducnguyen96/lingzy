@@ -12,8 +12,8 @@ export default async function Page() {
       <div className="text-center space-y-4">
         <p className="text-2xl font-bold">English Vocabulary</p>
         <p>
-          Let's start your journey to learn categorized English vocabulary on
-          Langeek
+          Let&apos;s start your journey to learn categorized English vocabulary
+          on Langeek
         </p>
       </div>
       <section className="mt-8">

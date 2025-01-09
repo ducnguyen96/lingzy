@@ -19,6 +19,7 @@ import { Loader2 } from "lucide-react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { toast } from "sonner";
 import AddNewWordListDialog from "./add-new-wordlist-dialog";
+import { noPhoto } from "@/config/placeholder";
 
 interface Props {
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -138,10 +139,7 @@ export default function UserWordList(props: Props) {
                                   className="flex items-center gap-2"
                                 >
                                   <Image
-                                    src={
-                                      item.thumbnail ||
-                                      "/assets/photo/no-photo.png"
-                                    }
+                                    src={item.thumbnail || noPhoto}
                                     width={56}
                                     height={56}
                                     alt=""

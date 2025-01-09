@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { DictContent } from "./dictionary/content";
 import { WordEntity } from "@/lib/server/services/dictionary";
 import { ScrollArea } from "./ui/scroll-area";
+import NoResult from "./dictionary/search/no-result";
 
 export default function DictContentDialog(props: { word: string }) {
   const [entity, setEntity] = useState<WordEntity | undefined>(undefined);
@@ -18,13 +19,16 @@ export default function DictContentDialog(props: { word: string }) {
   const { word } = props;
   const lowercased = word.trim().toLowerCase();
 
+  const fetchWord = () => {
+    fetch(`/api/dictionary?q=${lowercased}&lang=en`)
+      .then((res) => res.json())
+      .then((json) => {
+        setEntity(json.data);
+      });
+  };
+
   useEffect(() => {
-    if (lowercased.length)
-      fetch(`/api/dictionary?q=${lowercased}&lang=en`, {
-        cache: "force-cache",
-      })
-        .then((res) => res.json())
-        .then((json) => setEntity(json.data));
+    if (lowercased) fetchWord();
   }, [lowercased]);
 
   return (
@@ -43,7 +47,7 @@ export default function DictContentDialog(props: { word: string }) {
             <DictContent {...entity} />
           </ScrollArea>
         ) : (
-          <span>No Result</span>
+          <NoResult customAction={{ word: lowercased, callBack: fetchWord }} />
         )}
       </DialogContent>
     </Dialog>

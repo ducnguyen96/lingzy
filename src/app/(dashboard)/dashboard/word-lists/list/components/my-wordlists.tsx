@@ -32,7 +32,7 @@ async function Wordlists() {
 
 export default function MyWordlists() {
   return (
-    <div className="p-6 space-y-6 bg-primary/10 text-lg font-semibold">
+    <div className="p-6 space-y-6 bg-primary/10 text-lg font-semibold rounded-3xl">
       <div className="flex gap-2 items-center">
         <Bookmark />
         <span>Created by me:</span>

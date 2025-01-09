@@ -1,10 +1,14 @@
-import { asc, DrizzleError, eq } from "drizzle-orm";
+import { asc, DrizzleError, eq, inArray } from "drizzle-orm";
 import db from "../db";
 import { DBUser } from "./user";
-import { InsertWordListDTO, wordLists } from "../schemas";
+import { InsertWordListDTO, translations, wordLists } from "../schemas";
 import { TZDate } from "@date-fns/tz";
 
 export type WordListEntity = NonNullable<Awaited<ReturnType<typeof queryById>>>;
+export type WordListWithTranslations = NonNullable<
+  Awaited<ReturnType<typeof queryDetailsById>>
+>;
+
 export const queryById = async (id: number) => {
   return db.query.wordLists.findFirst({
     where: eq(wordLists.id, id),
@@ -13,6 +17,27 @@ export const queryById = async (id: number) => {
       origin: true,
     },
   });
+};
+
+export const queryDetailsById = async (id: number) => {
+  const found = await db.query.wordLists.findFirst({
+    where: eq(wordLists.id, id),
+    with: {
+      owner: true,
+      origin: true,
+    },
+  });
+  if (!found) return found;
+
+  const trans = await db.query.translations.findMany({
+    where: inArray(translations.id, found.translationIds),
+    with: {
+      wordPhoto: true,
+      word: true,
+    },
+  });
+
+  return { wordList: found, translations: trans };
 };
 
 export const insertWordList = async (user: DBUser, dto: InsertWordListDTO) => {

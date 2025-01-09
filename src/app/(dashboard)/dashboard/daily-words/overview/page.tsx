@@ -11,7 +11,7 @@ export default async function Page() {
   const baseUrl = "/dashboard/daily-words";
 
   return (
-    <div className="h-full justify-center items-center lg:p-4 space-y-4">
+    <div className="h-full justify-center items-center space-y-4">
       <Link prefetch={false} href={`/flashcard/daily-words`}>
         <Button variant="ghost" className="bg-primary/5">
           <BrainCircuit className="text-purple-400" />

@@ -9,7 +9,7 @@ export default async function MyWordLists() {
   const data = await getMyWordlists();
 
   return (
-    <Box className="group cursor-pointer">
+    <Box>
       <Link href="/dashboard/word-lists/list">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -18,8 +18,8 @@ export default async function MyWordLists() {
           </div>
           <ArrowRight className="group-hover:translate-x-4 transition-transform duration-300" />
         </div>
-        <MyWordListsCarousel wordLists={data} />
       </Link>
+      <MyWordListsCarousel wordLists={data} />
     </Box>
   );
 }

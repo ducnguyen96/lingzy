@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { WordEntity } from "@/lib/server/services/dictionary";
 import { wordTypeToColor } from "@/config/features";
 import { useDictSearch } from "@/components/providers/dict-search-provider";
+import { noPhoto } from "@/config/placeholder";
 
 export function SearchResultItem(props: WordEntity) {
   const { search, setSearch } = useDictSearch();
@@ -17,7 +18,7 @@ export function SearchResultItem(props: WordEntity) {
       onClick={() => setSearch("")}
     >
       <Image
-        src={displayTrans.wordPhoto?.thumbnail || "/assets/photo/no-photo.png"}
+        src={displayTrans.wordPhoto?.thumbnail || noPhoto}
         width={256}
         height={256}
         alt={word}

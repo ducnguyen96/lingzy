@@ -254,7 +254,7 @@ const scrapeLangeekWord = async (lang: string, word: string, id: number) => {
   if (found) return;
 
   const res = await fetch(
-    `https://dictionary.langeek.co/_next/data/O_SZAZwTCwgaW7-UCF_5h/${lang}/word/${id}.json`,
+    `https://dictionary.langeek.co/_next/data/44p3JGBvr0Xw6O8xG-9wh/${lang}/word/${id}.json`,
   );
   if (!res.ok) return;
   const json = await res.json();

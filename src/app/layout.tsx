@@ -11,6 +11,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { GlobalLoadingProvider } from "@/components/providers/global-loading-provider";
 import GlobalLoadingIndicator from "@/components/global-loading-indicator";
 import WordSelectListener from "@/components/word-select-listener";
+import { DictSearchProvider } from "@/components/providers/dict-search-provider";
 
 export const metadata: Metadata = {
   title: "Lingzy",
@@ -52,13 +53,15 @@ export default function RootLayout({
           <SessionProvider>
             <GlobalLoadingProvider>
               <SidebarProvider defaultOpen={false}>
-                <AppSidebar />
-                <SidebarInset>
-                  {children}
-                  <Toaster />
-                  <GlobalLoadingIndicator />
-                  <WordSelectListener />
-                </SidebarInset>
+                <DictSearchProvider>
+                  <AppSidebar />
+                  <SidebarInset>
+                    {children}
+                    <Toaster />
+                    <GlobalLoadingIndicator />
+                    <WordSelectListener />
+                  </SidebarInset>
+                </DictSearchProvider>
               </SidebarProvider>
             </GlobalLoadingProvider>
           </SessionProvider>

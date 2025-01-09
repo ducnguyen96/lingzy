@@ -58,7 +58,9 @@ export const DictSearchProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     const dictContent = document.getElementById("dict-content");
-    if (!debouncedTerm && dictContent) dictContent.style.display = "block";
+    if (!debouncedTerm && dictContent && dictContent.style.display === "none") {
+      dictContent.style.display = "block";
+    }
     if (!debouncedTerm) return;
 
     startTransition(() => {

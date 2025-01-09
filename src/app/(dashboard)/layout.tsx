@@ -1,11 +1,7 @@
-export default function RootLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <>
-      <div className="p-4 h-full">{children}</div>
-    </>
-  );
+  return <div className="p-4 min-h-full">{children}</div>;
 }

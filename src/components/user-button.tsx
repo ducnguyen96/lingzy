@@ -79,7 +79,7 @@ export default function UserButton() {
               width={30}
               src={userImg}
               alt={userImgAlt}
-              className="rounded-full"
+              className="rounded-full cursor-pointer"
             />
           </DropdownMenuTrigger>
           <DropdownMenuContent side="bottom" align="end">

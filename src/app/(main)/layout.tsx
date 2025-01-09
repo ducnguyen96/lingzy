@@ -1,6 +1,6 @@
 import Header from "@/components/layout/header";
 
-export default function RootLayout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;

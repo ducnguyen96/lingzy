@@ -1,7 +1,6 @@
 import { SevDaysProgressChart } from "@/components/charts/sev-days-progress-chart";
 import { overviewConf } from "@/config/overview";
 import { cn } from "@/lib/utils";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { DailyWordsOverview } from "@/lib/server/services/daily-word";
 
 export default function Overview({
@@ -11,10 +10,7 @@ export default function Overview({
 }) {
   return (
     <div className="lg:p-6 lg:bg-primary/5  rounded-3xl">
-      <div className="pb-4 flex items-center justify-between">
-        <p className="text-xl font-bold">Overview</p>
-        <SidebarTrigger className="md:hidden" />
-      </div>
+      <p className="text-xl font-bold p-4">Overview</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="p-4 bg-primary/10 rounded-3xl">
           <SevDaysProgressChart chartData={overview.sevDays} />

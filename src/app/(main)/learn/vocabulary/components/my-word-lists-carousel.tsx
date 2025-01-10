@@ -37,7 +37,7 @@ export default function MyWordListsCarousel(props: {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href={`/dashboard/word-lists/details/${entity.id}`}
+                href={`/dashboard/word-lists/list/${entity.id}`}
                 className={cn("embla__slide [&:not(:first-child)]:ml-4")}
               >
                 <Image

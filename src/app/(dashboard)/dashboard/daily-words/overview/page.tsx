@@ -9,7 +9,7 @@ export default async function Page() {
   const baseUrl = "/dashboard/daily-words";
 
   return (
-    <div className="h-full justify-center items-center space-y-4">
+    <div className="h-full p-4 pt-0 justify-center items-center space-y-4">
       <Overview overview={overview} />
       <div className="p-6 gap-6 bg-primary/5 grid grid-cols-1 lg:grid-cols-2 rounded-3xl">
         <EveryComponent

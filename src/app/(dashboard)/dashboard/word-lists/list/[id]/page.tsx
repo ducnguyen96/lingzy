@@ -12,7 +12,7 @@ export default async function Page({
   const { wordList, translations } = await getById(id);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-4">
       <Overview wordList={wordList} />
       <div className="space-y-4">
         <p>Word:</p>

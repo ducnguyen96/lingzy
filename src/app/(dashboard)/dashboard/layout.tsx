@@ -7,7 +7,7 @@ export default function Layout({
 }>) {
   return (
     <>
-      <div className="mb-4 flex justify-end">
+      <div className="p-4 flex justify-end">
         <HeaderButtons />
       </div>
       {children}

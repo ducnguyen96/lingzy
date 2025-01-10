@@ -158,7 +158,6 @@ export const queryTodayWords = async (user: DBUser) => {
     where: and(
       eq(dailyWords.userId, user.id),
       lt(dailyWords.nextReview, endOfDay(now)),
-      gte(dailyWords.nextReview, startOfDay(now)),
       isNull(dailyWords.completedAt),
     ),
     with: {

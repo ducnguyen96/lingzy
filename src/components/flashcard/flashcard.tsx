@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import {
   Frown,
@@ -27,6 +27,7 @@ interface FlashCardProps {
 }
 
 export default function FlashCard(props: FlashCardProps) {
+  const ref = useRef(null);
   const { className, review, focused, entity } = props;
   const [flipped, setFlipped] = useState(false);
   const { word: translation, id } = entity;
@@ -37,6 +38,18 @@ export default function FlashCard(props: FlashCardProps) {
     if (focused && pronun && pronun.audio) new Audio(pronun.audio).play();
   }, [focused, pronun]);
 
+  useEffect(() => {
+    if (!ref) return;
+
+    // @ts-expect-error add event listener
+    ref.current.addEventListener("wheel", () => {});
+
+    return () => {
+      // @ts-expect-error remove event listener
+      if (ref && ref.current) ref.current.removeEventListener("wheel");
+    };
+  }, []);
+
   return (
     <div
       className={cn(
@@ -46,7 +59,7 @@ export default function FlashCard(props: FlashCardProps) {
         className,
       )}
     >
-      <div className="flash-card-inner">
+      <div className="flash-card-inner" ref={ref}>
         {/* Front */}
         <div className="flash-card-front bg-primary/10 shadow-xl shadow-foreground/20 rounded-3xl">
           <div className="flex justify-end">

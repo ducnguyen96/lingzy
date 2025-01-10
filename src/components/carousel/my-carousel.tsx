@@ -86,6 +86,7 @@ export default function MyCarousel({
           emblaRef={emblaRef1}
           className="mt-4"
           effect={["opacity"]}
+          hideControl
         >
           {todayWords.map((entity, idx) => (
             <span
@@ -104,6 +105,7 @@ export default function MyCarousel({
         emblaApi={emblaApi}
         emblaRef={emblaRef}
         className="mt-10 lg:mt-20"
+        hideControl
       >
         {todayWords.map((entity, idx) => (
           <FlashCard

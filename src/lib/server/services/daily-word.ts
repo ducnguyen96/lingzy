@@ -1,4 +1,13 @@
-import { and, DrizzleError, eq, gte, isNull, lt } from "drizzle-orm";
+import {
+  and,
+  DrizzleError,
+  eq,
+  gte,
+  isNotNull,
+  isNull,
+  lt,
+  notInArray,
+} from "drizzle-orm";
 import db from "../db";
 import { DBUser } from "./user";
 import { translations, UpdateDailyWordDTO, dailyWords } from "../schemas";
@@ -202,5 +211,26 @@ export const patchTodayWord = async (
     }
 
     await tx.update(dailyWords).set(dto).where(eq(dailyWords.id, id));
+  });
+};
+
+export const queryUserDailyWords = async (user: DBUser, interval?: number) => {
+  const filter = [eq(dailyWords.userId, user.id)];
+
+  if (interval === 0)
+    filter.push(notInArray(dailyWords.interval, [1, 2, 4, 8, 16, 32]));
+
+  if (interval === -1) filter.push(isNotNull(dailyWords.completedAt));
+
+  if (interval) filter.push(eq(dailyWords.interval, interval));
+  return db.query.dailyWords.findMany({
+    where: and(...filter),
+    with: {
+      word: {
+        with: {
+          wordPhoto: true,
+        },
+      },
+    },
   });
 };

@@ -5,6 +5,8 @@ import { EmblaCarouselType, EmblaEventType } from "embla-carousel";
 import "./embla-carousel.css";
 import { EmblaViewportRefType } from "embla-carousel-react";
 import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const TWEEN_FACTOR_BASE = 0.1;
 
@@ -16,6 +18,7 @@ interface PropType extends PropsWithChildren {
   emblaRef: EmblaViewportRefType;
   emblaApi?: EmblaCarouselType;
   effect?: string[];
+  hideControl?: boolean;
 }
 
 export default function EmblaCarousel(props: PropType) {
@@ -25,9 +28,18 @@ export default function EmblaCarousel(props: PropType) {
     emblaApi,
     className,
     effect = ["opacity", "scale"],
+    hideControl,
   } = props;
+
   const tweenFactor = useRef(0);
   const tweenNodes = useRef<HTMLElement[]>([]);
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
 
   const setTweenNodes = useCallback((emblaApi: EmblaCarouselType): void => {
     tweenNodes.current = emblaApi.slideNodes().map((slideNode) => {
@@ -100,8 +112,30 @@ export default function EmblaCarousel(props: PropType) {
   }, [emblaApi, tweenScale]);
 
   return (
-    <div className={cn("overflow-hidden", className)} ref={emblaRef}>
-      <div className="flex">{children}</div>
+    <div className={cn("relative group", className)}>
+      {!hideControl ? (
+        <Button
+          size="icon"
+          variant="secondary"
+          className="opacity-50 rounded-full group-hover:opacity-100 absolute top-1/2 left-0 !-translate-y-1/2 z-10"
+          onClick={scrollPrev}
+        >
+          <ChevronLeft />
+        </Button>
+      ) : null}
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex">{children}</div>
+      </div>
+      {!hideControl ? (
+        <Button
+          size="icon"
+          variant="secondary"
+          className="rounded-full opacity-50 group-hover:opacity-100 absolute top-1/2 right-0 -translate-y-1/2 z-10"
+          onClick={scrollNext}
+        >
+          <ChevronRight />
+        </Button>
+      ) : null}
     </div>
   );
 }

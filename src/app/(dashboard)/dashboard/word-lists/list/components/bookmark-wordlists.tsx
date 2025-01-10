@@ -1,9 +1,10 @@
 import { Bookmark } from "lucide-react";
 import { Suspense } from "react";
 import { Wordlist, WordlistsFallback } from "./wordlist";
+import { WordListEntity } from "@/lib/server/services/word-list";
 
 async function Wordlists() {
-  const bookmarkWL: any[] = await new Promise((resolve) =>
+  const bookmarkWL: WordListEntity[] = await new Promise((resolve) =>
     setTimeout(() => resolve([]), 1000),
   );
   return (
@@ -26,6 +27,7 @@ export default function BookmarkWordlists() {
       <div className="flex gap-2 items-center">
         <Bookmark />
         <span>Bookmarked Wordlists:</span>
+        <span>Bookmarked Wordlists</span>
       </div>
       <Suspense fallback={<WordlistsFallback />}>
         <Wordlists />

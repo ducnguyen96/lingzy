@@ -105,7 +105,7 @@ export const insertOne = async (dto: InsertWordDTO) => {
   });
 };
 
-export const findFirst = async ({ word, lang }: FindDTO) => {
+export const findFirst = async (lang: string, word: string) => {
   return db.query.words.findFirst({
     where: and(eq(words.lang, lang), eq(words.word, word)),
     with: {

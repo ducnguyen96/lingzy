@@ -10,7 +10,9 @@
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",
     "drop": "drizzle-kit drop",
-    "preinstall": "mkdir -p public/assets/{photo,audio}"
+    "preinstall": "pnpm mkdir",
+    "prebuild": "pnpm mkdir",
+    "mkdir": "mkdir -p tmp/assets/{photo,audio} & mkdir -p public/user/photo"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.4",

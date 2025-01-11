@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   const q = searchParams.get("q") || "";
   const lang = searchParams.get("lang") || "en";
   if (q && lang) {
-    const found = await findFirst({ word: q, lang });
+    const found = await findFirst(lang, q);
     return NextResponse.json({ message: "Fetched successfully", data: found });
   }
   const found = await fullTextSearch(s, lang);

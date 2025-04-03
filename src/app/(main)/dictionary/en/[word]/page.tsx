@@ -20,11 +20,10 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: PageProps) {
   const { word } = await params;
-  let details = await findFirst(decodeURIComponent(word), "en");
-
+  let details = await findFirst("en", decodeURIComponent(word));
   if (!details) {
     await scrape("en", word);
-    details = await findFirst(decodeURIComponent(word), "en");
+    details = await findFirst("en", decodeURIComponent(word));
   }
 
   if (!details) notFound();

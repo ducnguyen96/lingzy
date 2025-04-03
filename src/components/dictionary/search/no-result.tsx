@@ -27,7 +27,7 @@ export default function NoResult({ customAction }: Props) {
       });
     }, 300);
 
-    const { ok } = await scrape(customAction?.word || search, "en");
+    const { ok } = await scrape("en", customAction?.word || search);
 
     clearInterval(interval);
     setProgress(100);

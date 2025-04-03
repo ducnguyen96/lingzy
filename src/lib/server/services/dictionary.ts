@@ -20,15 +20,9 @@ export type FindDTO = {
 };
 
 export type WordEntity = NonNullable<Awaited<ReturnType<typeof findFirst>>>;
-export type TranslationEntity = NonNullable<
-  Awaited<ReturnType<typeof findFirst>>
->["translations"][0];
-export type PronunciationEntity = NonNullable<
-  Awaited<ReturnType<typeof findFirst>>
->["pronunciations"][0];
-export type WordPhotoEntity = NonNullable<
-  Awaited<ReturnType<typeof findFirst>>
->["translations"][0]["wordPhoto"];
+export type TranslationEntity = WordEntity["translations"][0];
+export type PronunciationEntity = WordEntity["pronunciations"][0];
+export type WordPhotoEntity = WordEntity["translations"][0]["wordPhoto"];
 
 type Tx = PgTransaction<
   NodePgQueryResultHKT,

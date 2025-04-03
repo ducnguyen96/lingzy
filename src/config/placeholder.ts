@@ -1,1 +1,1 @@
-export const noPhoto = "/assets/photo/no-image-available.jpg";
+export const noPhoto = "/photo/no-image-available.jpg";

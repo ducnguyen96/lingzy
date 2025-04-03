@@ -1,4 +1,6 @@
 import { InsertWordDTO } from "@/lib/server/schemas";
+import https from "https";
+import { createWriteStream, existsSync } from "fs";
 
 export const extractTranslation = (
   lang: string,
@@ -27,8 +29,11 @@ const extractWordPhoto = (wordPhoto: WordPhoto) => {
   if (!wordPhoto) return;
   const { photo, photoThumbnail, originalTitle } = wordPhoto;
 
-  // TODO: get own url
-  return { title: originalTitle, photo, thumbnail: photoThumbnail };
+  return {
+    title: originalTitle,
+    photo: downloadPhoto(photo),
+    thumbnail: downloadPhoto(photoThumbnail),
+  };
 };
 
 const extractSubTranslation = (
@@ -45,3 +50,25 @@ const extractSubTranslation = (
     parentId: 1,
   }));
 };
+
+function downloadPhoto(url: string) {
+  const segments = url.split("/");
+  const photoId = segments[4];
+
+  const filepath = `/photo/${photoId}_${segments[5]}.jpeg`;
+  const saveDir = process.env.SAVE_DIR || "public";
+  const wholePath = process.cwd() + `/${saveDir}${filepath}`;
+
+  if (existsSync(wholePath)) return filepath;
+
+  https.get(url, (response) => {
+    const fileStream = createWriteStream(wholePath);
+    response.pipe(fileStream);
+
+    fileStream.on("finish", () => {
+      fileStream.close();
+    });
+  });
+
+  return filepath;
+}

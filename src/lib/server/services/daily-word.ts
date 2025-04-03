@@ -2,7 +2,6 @@ import {
   and,
   DrizzleError,
   eq,
-  gte,
   isNotNull,
   isNull,
   lt,

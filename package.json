@@ -12,7 +12,8 @@
     "drop": "drizzle-kit drop",
     "preinstall": "pnpm mkdir",
     "prebuild": "pnpm mkdir",
-    "mkdir": "mkdir -p tmp/{photo,audio} & mkdir -p public/{photo,audio} & mkdir -p public/user/photo"
+    "mkdir": "mkdir -p tmp/{photo,audio} & mkdir -p public/{photo,audio} & mkdir -p public/user/photo",
+    "sync-tmp": "cp -ru tmp/* public/"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.4",
